@@ -10,7 +10,7 @@ is to prevent the bird from falling to the ground or hitting a tube.
 - Tube： A class that represents the tubes which the bird **MUST NOT** hit
 - FBGame: A class that represents the game board
 - Score: A class that that represents the score a player earned;
-- 
+
 ### User Stories:
 **Phase 0 :**
 - As a user, I want to be able to create a new game with an username of my choosing.
