@@ -2,7 +2,10 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/../../Problems/B02-SpaceInvadersBase/B02-SpaceInvadersBase.iml" filepath="$PROJECT_DIR$/../../Problems/B02-SpaceInvadersBase/B02-SpaceInvadersBase.iml" />
       <module fileurl="file://$PROJECT_DIR$/Project-Starter.iml" filepath="$PROJECT_DIR$/Project-Starter.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../SnakeConsole-Lanterna/SnakeConsole-Lanterna.iml" filepath="$PROJECT_DIR$/../SnakeConsole-Lanterna/SnakeConsole-Lanterna.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../../Problems/TellerApp/TellerApp.iml" filepath="$PROJECT_DIR$/../../Problems/TellerApp/TellerApp.iml" />
     </modules>
   </component>
 </project>

@@ -1,0 +1,151 @@
+package ui;
+
+import com.googlecode.lanterna.TerminalPosition;
+import com.googlecode.lanterna.TerminalSize;
+import com.googlecode.lanterna.TextColor;
+import com.googlecode.lanterna.graphics.TextGraphics;
+import com.googlecode.lanterna.gui2.MultiWindowTextGUI;
+import com.googlecode.lanterna.gui2.WindowBasedTextGUI;
+import com.googlecode.lanterna.gui2.dialogs.MessageDialogBuilder;
+import com.googlecode.lanterna.gui2.dialogs.MessageDialogButton;
+import com.googlecode.lanterna.input.KeyStroke;
+import com.googlecode.lanterna.input.KeyType;
+import com.googlecode.lanterna.screen.Screen;
+import com.googlecode.lanterna.terminal.DefaultTerminalFactory;
+import model.*;
+
+import java.io.IOException;
+import java.util.List;
+
+public class TerminalGame {
+    private FBGame game;
+    private Screen screen;
+    private WindowBasedTextGUI endGui;
+
+    /**
+     * Begins the game and method does not leave execution
+     * until game is complete.
+     */
+    public void start() throws IOException, InterruptedException {
+        screen = new DefaultTerminalFactory().createScreen();
+        screen.startScreen();
+
+        TerminalSize terminalSize = screen.getTerminalSize();
+
+        game = new FBGame(
+                (terminalSize.getColumns() - 1) / 2,
+                terminalSize.getRows() - 2
+        );
+    }
+
+    /**
+     * Handles one cycle in the game by taking user input,
+     * ticking the game internally, and rendering the effects
+     */
+    private void tick() throws IOException {
+        handleUserInput();
+
+        game.tick();
+
+        screen.setCursorPosition(new TerminalPosition(0, 0));
+        screen.clear();
+        render();
+        screen.refresh();
+
+        screen.setCursorPosition(new TerminalPosition(screen.getTerminalSize().getColumns() - 1, 0));
+    }
+
+    /**
+     * Renders the current screen.
+     * Draws the end screen if the game has ended, otherwise
+     * draws the score, snake, and food.
+     */
+    private void render() {
+        if (game.isEnded()) {
+            if (endGui == null) {
+                drawEndScreen();
+            }
+
+            return;
+        }
+
+        drawScore();
+        drawBird();
+        drawTube();
+    }
+
+
+
+    /**
+     * Sets the snake's direction corresponding to the
+     * user's keystroke
+     */
+    private void handleUserInput() throws IOException {
+        KeyStroke stroke = screen.pollInput();
+
+        if (stroke != null && stroke.getKeyType() == KeyType.Character && stroke.getCharacter() == ' ') {
+
+        }
+    }
+
+    /**
+     * Begins the game cycle. Ticks once every Game.TICKS_PER_SECOND until
+     * game has ended and the endGui has been exited.
+     */
+    private void beginTicks() throws IOException, InterruptedException {
+        while (!game.isEnded() || endGui.getActiveWindow() != null) {
+            tick();
+            Thread.sleep(1000L / game.TICKS_PER_SECOND);
+        }
+
+        System.exit(0);
+    }
+
+    private void drawEndScreen() {
+        endGui = new MultiWindowTextGUI(screen);
+
+        new MessageDialogBuilder()
+                .setTitle("Game over!")
+                .setText("You finished with a score of " + game.getScore() + "!")
+                .addButton(MessageDialogButton.Close)
+                .build()
+                .showDialog(endGui);
+    }
+
+    private void drawScore() {
+        TextGraphics text = screen.newTextGraphics();
+        text.setForegroundColor(TextColor.ANSI.RED);
+        text.putString(1, 0, "Score: ");
+
+        text = screen.newTextGraphics();
+        text.setForegroundColor(TextColor.ANSI.WHITE);
+        text.putString(8, 0, String.valueOf(game.getScore()));
+    }
+
+    private void drawTube() {
+        for(Tube tube : game.getTubes()){
+            for (Position pos : tube.getBody()) {
+                drawPosition(pos, TextColor.ANSI.GREEN, '█', true);
+            }
+        }
+
+    }
+
+    private void drawBird() {
+        drawPosition(game.getBird().getPosition(), TextColor.ANSI.RED, '⬤', true);
+    }
+
+    /**
+     * Draws a character in a given position on the terminal.
+     * If wide, it will draw the character twice to make it appear wide.
+     */
+    private void drawPosition(Position pos, TextColor color, char c, boolean wide) {
+        TextGraphics text = screen.newTextGraphics();
+        text.setForegroundColor(color);
+        text.putString(pos.getX() * 2, pos.getY() + 1, String.valueOf(c));
+
+        if (wide) {
+            text.putString(pos.getX() * 2 + 1, pos.getY() + 1, String.valueOf(c));
+        }
+    }
+}
