@@ -1,29 +1,50 @@
 package model;
 
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class FBGame {
 
-    public static final int TICKS_PER_SECOND = 10;
+    public static final int TICKS_PER_SECOND = 5;
     private Bird bird;
-    private List<Tube> tubes;
+    private Deque<Tube> tubes;
     private Score score;
     private boolean ended = false;
     private int maxX;
     private int maxY;
+    private Random random;
+    private List<Position> ground;
 
     public FBGame(int maxX, int maxY) {
         score = new Score();
-        bird = new Bird(50,0);
-        tubes = new ArrayList<Tube>();
+        bird = new Bird(50, 0);
+        tubes = new ArrayDeque<>();
+        random = new Random();
+        ground = new ArrayList<>();
         this.maxX = maxX;
         this.maxY = maxY;
+        for (int i = 0; i <= maxX; i++) {
+            ground.add(new Position(i, maxY));
+        }
     }
 
     public void tick() {
+        if (!tubes.isEmpty() && tubes.getFirst().getX() < 0) {
+            tubes.removeFirst();
+        }
+        if (tubes.isEmpty() || tubes.getLast().getX() < maxX / 2) {
+            genNewTube();
+        }
+        for (Tube t : tubes) {
+            t.moveLeft();
+        }
+    }
 
+    private void genNewTube() {
+        int spaceLength = maxY / 5 * 2;
+        int spaceStart = random.nextInt(maxY - spaceLength);
+        Tube newTube = new Tube(maxX, spaceStart, spaceStart + spaceLength, maxY);
+        tubes.add(newTube);
     }
 
     /**
@@ -31,7 +52,7 @@ public class FBGame {
      * and not already occupied
      */
     public boolean isValidPosition(Position pos) {
-        return  !hasFallen(pos) &&
+        return !hasFallen(pos) &&
                 !hasCollided(pos);
     }
 
@@ -51,11 +72,15 @@ public class FBGame {
         return ended;
     }
 
-    public List<Tube> getTubes() {
+    public Deque<Tube> getTubes() {
         return tubes;
     }
 
     public Bird getBird() {
         return bird;
+    }
+
+    public List<Position> getGround() {
+        return ground;
     }
 }

@@ -56,7 +56,7 @@ public class StartMenu {
     }
 
     private void doNewGame() throws IOException, InterruptedException {
-        TerminalGame gameHandler = new TerminalGame();
+        FlappyBirdGame gameHandler = new FlappyBirdGame();
 
         gameHandler.start();
     }

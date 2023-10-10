@@ -17,11 +17,10 @@ import model.*;
 import java.io.IOException;
 import java.util.List;
 
-public class TerminalGame {
+public class FlappyBirdGame {
     private FBGame game;
     private Screen screen;
     private WindowBasedTextGUI endGui;
-
     /**
      * Begins the game and method does not leave execution
      * until game is complete.
@@ -30,12 +29,15 @@ public class TerminalGame {
         screen = new DefaultTerminalFactory().createScreen();
         screen.startScreen();
 
+
         TerminalSize terminalSize = screen.getTerminalSize();
 
         game = new FBGame(
                 (terminalSize.getColumns() - 1) / 2,
                 terminalSize.getRows() - 2
         );
+
+        beginTicks();
     }
 
     /**
@@ -43,7 +45,7 @@ public class TerminalGame {
      * ticking the game internally, and rendering the effects
      */
     private void tick() throws IOException {
-        handleUserInput();
+        //handleUserInput();
 
         game.tick();
 
@@ -70,10 +72,10 @@ public class TerminalGame {
         }
 
         drawScore();
-        drawBird();
+        //drawBird();
         drawTube();
+        drawGround();
     }
-
 
 
     /**
@@ -114,7 +116,7 @@ public class TerminalGame {
 
     private void drawScore() {
         TextGraphics text = screen.newTextGraphics();
-        text.setForegroundColor(TextColor.ANSI.RED);
+        text.setForegroundColor(TextColor.ANSI.WHITE);
         text.putString(1, 0, "Score: ");
 
         text = screen.newTextGraphics();
@@ -123,16 +125,21 @@ public class TerminalGame {
     }
 
     private void drawTube() {
-        for(Tube tube : game.getTubes()){
+        for (Tube tube : game.getTubes()) {
             for (Position pos : tube.getBody()) {
                 drawPosition(pos, TextColor.ANSI.GREEN, '█', true);
             }
         }
-
     }
 
     private void drawBird() {
         drawPosition(game.getBird().getPosition(), TextColor.ANSI.RED, '⬤', true);
+    }
+
+    private void drawGround() {
+        for (Position pos : game.getGround()) {
+            drawPosition(pos, TextColor.ANSI.CYAN, '█', true);
+        }
     }
 
     /**
