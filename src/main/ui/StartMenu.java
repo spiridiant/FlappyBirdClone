@@ -59,6 +59,16 @@ public class StartMenu {
         FlappyBirdGame gameHandler = new FlappyBirdGame();
 
         gameHandler.start();
+        Score score = gameHandler.getScore();
+        if (score.getPoints() > 0) {
+            System.out.println("Enter your username to add your score to the leaderboard.");
+            String username = input.next();
+            if (username != null || username.length() > 0) {
+                score.setUsername(username);
+                leaderboard.addScore(score);
+            }
+        }
+
     }
 
     private void doLeaderboard() {
@@ -67,7 +77,7 @@ public class StartMenu {
             System.out.println("No records yet, go play a game!");
         }
         for (int i = 0; i < scores.size(); i++) {
-            System.out.println("User: " + scores.get(i).getUsername() + "  Score: " + scores.get(i).getScore());
+            System.out.println("User: " + scores.get(i).getUsername() + "  Score: " + scores.get(i).getPoints());
         }
     }
 

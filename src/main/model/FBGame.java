@@ -17,7 +17,7 @@ public class FBGame {
 
     public FBGame(int maxX, int maxY) {
         score = new Score();
-        bird = new Bird(50, 0);
+        bird = new Bird(maxX / 2, maxY / 2);
         tubes = new ArrayDeque<>();
         random = new Random();
         ground = new ArrayList<>();
@@ -29,6 +29,20 @@ public class FBGame {
     }
 
     public void tick() {
+        handleTubes();
+
+        if (!this.bird.isFlapping()) {
+            bird.falls();
+        }
+        if (!isValidPosition(this.bird.getPosition())) {
+            ended = true;
+        }
+        bird.setFlapping(false);
+    }
+
+
+
+    private void handleTubes() {
         if (!tubes.isEmpty() && tubes.getFirst().getX() < 0) {
             tubes.removeFirst();
         }
@@ -52,20 +66,29 @@ public class FBGame {
      * and not already occupied
      */
     public boolean isValidPosition(Position pos) {
-        return !hasFallen(pos) &&
-                !hasCollided(pos);
+        return !hasFallen(pos) && !hasCollided(pos);
     }
 
     private boolean hasCollided(Position pos) {
+        for (Tube tube : tubes) {
+            if (tube.getX() == bird.getX()) {
+                for (Position tubePos : tube.getBody()) {
+                    if (tubePos.equals(pos)) {
+                        return true;
+                    }
+                }
+                score.incrementScore();
+            }
+        }
         return false;
     }
 
     private boolean hasFallen(Position pos) {
-        return pos.getY() > maxY;
+        return pos.getY() >= maxY;
     }
 
-    public int getScore() {
-        return score.getScore();
+    public Score getScore() {
+        return score;
     }
 
     public boolean isEnded() {

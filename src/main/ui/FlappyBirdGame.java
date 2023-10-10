@@ -15,12 +15,12 @@ import com.googlecode.lanterna.terminal.DefaultTerminalFactory;
 import model.*;
 
 import java.io.IOException;
-import java.util.List;
 
 public class FlappyBirdGame {
     private FBGame game;
     private Screen screen;
     private WindowBasedTextGUI endGui;
+
     /**
      * Begins the game and method does not leave execution
      * until game is complete.
@@ -28,7 +28,6 @@ public class FlappyBirdGame {
     public void start() throws IOException, InterruptedException {
         screen = new DefaultTerminalFactory().createScreen();
         screen.startScreen();
-
 
         TerminalSize terminalSize = screen.getTerminalSize();
 
@@ -40,12 +39,16 @@ public class FlappyBirdGame {
         beginTicks();
     }
 
+    public Score getScore() {
+        return game.getScore();
+    }
+
     /**
      * Handles one cycle in the game by taking user input,
      * ticking the game internally, and rendering the effects
      */
     private void tick() throws IOException {
-        //handleUserInput();
+        handleUserInput();
 
         game.tick();
 
@@ -72,7 +75,7 @@ public class FlappyBirdGame {
         }
 
         drawScore();
-        //drawBird();
+        drawBird();
         drawTube();
         drawGround();
     }
@@ -84,9 +87,8 @@ public class FlappyBirdGame {
      */
     private void handleUserInput() throws IOException {
         KeyStroke stroke = screen.pollInput();
-
         if (stroke != null && stroke.getKeyType() == KeyType.Character && stroke.getCharacter() == ' ') {
-
+            game.getBird().flap();
         }
     }
 
@@ -99,8 +101,6 @@ public class FlappyBirdGame {
             tick();
             Thread.sleep(1000L / game.TICKS_PER_SECOND);
         }
-
-        System.exit(0);
     }
 
     private void drawEndScreen() {
@@ -108,7 +108,7 @@ public class FlappyBirdGame {
 
         new MessageDialogBuilder()
                 .setTitle("Game over!")
-                .setText("You finished with a score of " + game.getScore() + "!")
+                .setText("You finished with a score of " + game.getScore().getPoints() + "!")
                 .addButton(MessageDialogButton.Close)
                 .build()
                 .showDialog(endGui);
@@ -121,7 +121,7 @@ public class FlappyBirdGame {
 
         text = screen.newTextGraphics();
         text.setForegroundColor(TextColor.ANSI.WHITE);
-        text.putString(8, 0, String.valueOf(game.getScore()));
+        text.putString(8, 0, String.valueOf(game.getScore().getPoints()));
     }
 
     private void drawTube() {
@@ -133,7 +133,7 @@ public class FlappyBirdGame {
     }
 
     private void drawBird() {
-        drawPosition(game.getBird().getPosition(), TextColor.ANSI.RED, '⬤', true);
+        drawPosition(game.getBird().getPosition(), TextColor.ANSI.RED, '⬤', false);
     }
 
     private void drawGround() {
