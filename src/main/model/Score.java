@@ -1,5 +1,8 @@
 package model;
 
+/**
+ *      Represents the score of the player, stores the points and username
+ */
 public class Score implements Comparable<Score> {
 
     private String username;
@@ -10,6 +13,10 @@ public class Score implements Comparable<Score> {
         this.points = 0;
     }
 
+    /**
+     * MODIFIES:    this
+     * EFFECT:      increment the score by one
+     */
     public void incrementScore() {
         this.points++;
     }
@@ -26,6 +33,10 @@ public class Score implements Comparable<Score> {
         this.username = username;
     }
 
+    /**
+     * REQUIRES:    other is not null
+     * EFFECT:      compare this and other
+     */
     @Override
     public int compareTo(Score other) {
         return Integer.compare(other.points, this.points);

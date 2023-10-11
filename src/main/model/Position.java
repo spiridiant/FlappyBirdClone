@@ -3,37 +3,47 @@ package model;
 import java.util.Objects;
 
 /**
+ * From SnakeConsole
  * Represents a position in the game space.
- * from SnakeConsole
  */
 public class Position {
-    private int x;
-    private int y;
+    private int xcoor;
+    private int ycoor;
 
     public Position(int x, int y) {
-        this.x = x;
-        this.y = y;
+        this.xcoor = x;
+        this.ycoor = y;
     }
 
     public int getX() {
-        return x;
+        return xcoor;
     }
 
     public int getY() {
-        return y;
+        return ycoor;
     }
 
+    /**
+     * REQUIRES:    o is not null
+     * EFFECT:      check if this and o is equal, i.e. have the same x and y
+     */
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         Position snakeNode = (Position) o;
-        return x == snakeNode.x &&
-                y == snakeNode.y;
+        return xcoor == snakeNode.xcoor && ycoor == snakeNode.ycoor;
     }
 
+    /**
+     * EFFECT:      return the hash code of this
+     */
     @Override
     public int hashCode() {
-        return Objects.hash(x, y);
+        return Objects.hash(xcoor, ycoor);
     }
 }

@@ -3,6 +3,10 @@ package model;
 
 import java.util.*;
 
+/**
+ *      The flappy bird game board
+ *      contain the bird, the tube and the ground
+ */
 public class FBGame {
 
     public static final int TICKS_PER_SECOND = 5;
@@ -28,6 +32,12 @@ public class FBGame {
         }
     }
 
+    /**
+     * MODIFIES:    this
+     * EFFECT:      tick the game,
+     *              change the status of the bird base on user input
+     *              end the game base on position of the bird
+     */
     public void tick() {
         handleTubes();
 
@@ -41,7 +51,12 @@ public class FBGame {
     }
 
 
-
+    /**
+     * MODIFIES:    this
+     * EFFECT:      delete tube that are out of screen
+     *              generate new tube when the last tube has moved to the middle of the screen
+     *              move all tubes to the left
+     */
     private void handleTubes() {
         if (!tubes.isEmpty() && tubes.getFirst().getX() < 0) {
             tubes.removeFirst();
@@ -54,6 +69,10 @@ public class FBGame {
         }
     }
 
+    /**
+     * MODIFIES:    this
+     * EFFECT:      add a new tube with specified space between two parts of the body
+     */
     private void genNewTube() {
         int spaceLength = maxY / 5 * 2;
         int spaceStart = random.nextInt(maxY - spaceLength);
@@ -62,13 +81,21 @@ public class FBGame {
     }
 
     /**
-     * Returns whether a given position is in bounds
-     * and not already occupied
+     * REQUIRES:    pos is not null
+     * EFFECT:      Returns whether a given position is above ground
+     *              and has not collided with a tube
      */
     public boolean isValidPosition(Position pos) {
         return !hasFallen(pos) && !hasCollided(pos);
     }
 
+    /**
+     * REQUIRES:    pos is not null
+     * MODIFIES:    this
+     * EFFECT:      check if a given position overlap with a tube
+     *              if it's passing a tube but didn't collide with it,
+     *              increment the score
+     */
     private boolean hasCollided(Position pos) {
         for (Tube tube : tubes) {
             if (tube.getX() == bird.getX()) {
@@ -83,6 +110,10 @@ public class FBGame {
         return false;
     }
 
+    /**
+     * REQUIRES:    pos is not null
+     * EFFECT:      check if a given position has fall on the ground
+     */
     private boolean hasFallen(Position pos) {
         return pos.getY() >= maxY;
     }

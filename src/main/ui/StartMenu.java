@@ -6,6 +6,10 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Scanner;
 
+/**
+ *      The start menu in the console
+ *      take user commands and execute them
+ */
 public class StartMenu {
 
     private Scanner input;
@@ -17,6 +21,11 @@ public class StartMenu {
         input.useDelimiter("\n");
     }
 
+    /**
+     * EFFECT:      run the start menu
+     *              get command from user
+     *              execute commands
+     */
     public void runStartMenu() throws IOException, InterruptedException {
         boolean keepGoing = true;
         String command = null;
@@ -33,9 +42,12 @@ public class StartMenu {
             }
         }
         System.out.println("\nGoodbye!");
+        System.exit(0);
     }
 
-    // EFFECTS: displays menu of options to user
+    /**
+     * EFFECT:      display all the option user has
+     */
     private void displayMenu() {
         System.out.println("\nSelect from:");
         System.out.println("\tg -> start new game");
@@ -43,8 +55,11 @@ public class StartMenu {
         System.out.println("\tq -> quit");
     }
 
-    // MODIFIES: this
-    // EFFECTS: processes user command
+    /**
+     * MODIFIES:    this
+     * EFFECT:      processes user command
+     *              if command not valid display error message
+     */
     private void processCommand(String command) throws IOException, InterruptedException {
         if (command.equals("g")) {
             doNewGame();
@@ -55,10 +70,17 @@ public class StartMenu {
         }
     }
 
+    /**
+     * MODIFIES:    this
+     * EFFECT:      instantiate a FlappyBirdGame object for a new game
+     *              when the game finished and user score is positive
+     *              ask for user's username to add the score to leaderboard
+     */
     private void doNewGame() throws IOException, InterruptedException {
         FlappyBirdGame gameHandler = new FlappyBirdGame();
 
         gameHandler.start();
+
         Score score = gameHandler.getScore();
         if (score.getPoints() > 0) {
             System.out.println("Enter your username to add your score to the leaderboard.");
@@ -71,6 +93,10 @@ public class StartMenu {
 
     }
 
+    /**
+     * EFFECT:      display the leaderboard with an order from highest to lowest score
+     *              if there's no record yet tell the user to play a game
+     */
     private void doLeaderboard() {
         List<Score> scores = leaderboard.getScores();
         if (scores.isEmpty()) {
