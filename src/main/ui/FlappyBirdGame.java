@@ -142,11 +142,10 @@ public class FlappyBirdGame {
     /**
      * EFFECT:      draw the tubes on the terminal
      */
-    @SuppressWarnings({"checkstyle:AvoidEscapedUnicodeCharacters", "checkstyle:SuppressWarnings"})
     private void drawTubes() {
         for (Tube tube : game.getTubes()) {
             for (Position pos : tube.getBody()) {
-                drawPosition(pos, TextColor.ANSI.GREEN, '\u2588', true);
+                drawPosition(pos, TextColor.ANSI.GREEN, '|', true);
             }
         }
     }
@@ -154,18 +153,16 @@ public class FlappyBirdGame {
     /**
      * EFFECT:      draw the bird on the terminal
      */
-    @SuppressWarnings({"checkstyle:AvoidEscapedUnicodeCharacters", "checkstyle:SuppressWarnings"})
     private void drawBird() {
-        drawPosition(game.getBird().getPosition(), TextColor.ANSI.RED, '\u2b24', false);
+        drawPosition(game.getBird().getPosition(), TextColor.ANSI.RED, '.', false);
     }
 
     /**
      * EFFECT:      draw the ground on the terminal
      */
-    @SuppressWarnings({"checkstyle:AvoidEscapedUnicodeCharacters", "checkstyle:SuppressWarnings"})
     private void drawGround() {
         for (Position pos : game.getGround()) {
-            drawPosition(pos, TextColor.ANSI.CYAN, '\u2588', true);
+            drawPosition(pos, TextColor.ANSI.CYAN, '|', true);
         }
     }
 
