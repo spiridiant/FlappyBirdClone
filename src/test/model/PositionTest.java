@@ -3,6 +3,7 @@ package model;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
 import java.util.Objects;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -40,6 +41,11 @@ public class PositionTest {
     @Test
     public void testEqualNull(){
         assertFalse(position1.equals(null));
+    }
+
+    @Test
+    public void testEqualNotSameObject(){
+        assertFalse(position1.equals(new ArrayList<>()));
     }
 
     @Test

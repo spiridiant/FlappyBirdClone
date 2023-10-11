@@ -102,6 +102,7 @@ public class StartMenu {
         if (scores.isEmpty()) {
             System.out.println("No records yet, go play a game!");
         }
+        System.out.println();
         for (int i = 0; i < scores.size(); i++) {
             System.out.println("User: " + scores.get(i).getUsername() + "  Score: " + scores.get(i).getPoints());
         }

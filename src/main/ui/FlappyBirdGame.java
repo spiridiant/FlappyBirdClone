@@ -154,7 +154,7 @@ public class FlappyBirdGame {
      * EFFECT:      draw the bird on the terminal
      */
     private void drawBird() {
-        drawPosition(game.getBird().getPosition(), TextColor.ANSI.RED, '.', false);
+        drawPosition(game.getBird().getPosition(), TextColor.ANSI.RED, '%', false);
     }
 
     /**
@@ -162,7 +162,7 @@ public class FlappyBirdGame {
      */
     private void drawGround() {
         for (Position pos : game.getGround()) {
-            drawPosition(pos, TextColor.ANSI.CYAN, '|', true);
+            drawPosition(pos, TextColor.ANSI.CYAN, '*', true);
         }
     }
 
