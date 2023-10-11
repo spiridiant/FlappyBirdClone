@@ -11,6 +11,7 @@ is to prevent the bird from falling to the ground or hitting a tube.
 - FBGame: A class that represents the game board
 - Score: A class that that represents the score a player earned
 - LeaderBoard: A class that represents the leaderboard which the user score will be displayed on
+- Position: A class that represents the position of an object in a game
 
 ### User Stories:
 **Phase 0 :**
