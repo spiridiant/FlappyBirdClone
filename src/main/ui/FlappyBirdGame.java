@@ -145,7 +145,7 @@ public class FlappyBirdGame {
     private void drawTubes() {
         for (Tube tube : game.getTubes()) {
             for (Position pos : tube.getBody()) {
-                drawPosition(pos, TextColor.ANSI.GREEN, '█', true);
+                drawPosition(pos, TextColor.ANSI.GREEN, '\u2588', true);
             }
         }
     }
@@ -154,7 +154,7 @@ public class FlappyBirdGame {
      * EFFECT:      draw the bird on the terminal
      */
     private void drawBird() {
-        drawPosition(game.getBird().getPosition(), TextColor.ANSI.RED, '⬤', false);
+        drawPosition(game.getBird().getPosition(), TextColor.ANSI.RED, '\u2b24', false);
     }
 
     /**
@@ -162,7 +162,7 @@ public class FlappyBirdGame {
      */
     private void drawGround() {
         for (Position pos : game.getGround()) {
-            drawPosition(pos, TextColor.ANSI.CYAN, '█', true);
+            drawPosition(pos, TextColor.ANSI.CYAN, '\u2588', true);
         }
     }
 

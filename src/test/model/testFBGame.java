@@ -83,4 +83,14 @@ public class testFBGame {
     public void testIsValidPositionNegative(){
         assertFalse(testGame.isValidPosition(new Position(3, 10)));
     }
+
+    @Test
+    public void testGetScore(){
+        assertEquals(0, testGame.getScore().getPoints());
+    }
+
+    @Test
+    public void testGetGround(){
+        assertEquals(7, testGame.getGround().size());
+    }
 }
