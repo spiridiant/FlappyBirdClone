@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class testScore {
+public class ScoreTest {
     private Score score1;
     private Score score2;
     private Score score3;

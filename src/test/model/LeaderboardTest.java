@@ -7,7 +7,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class testLeaderboard {
+public class LeaderboardTest {
     Leaderboard testBoard;
     Score score1;
     Score score2;

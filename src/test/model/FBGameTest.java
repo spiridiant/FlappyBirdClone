@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class testFBGame {
+public class FBGameTest {
     private FBGame testGame;
     @BeforeEach
     public void beforeTest(){

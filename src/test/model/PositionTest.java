@@ -7,7 +7,7 @@ import java.util.Objects;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class testPosition {
+public class PositionTest {
 
     private Position position1;
     private Position position2;
