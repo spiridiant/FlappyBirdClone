@@ -38,6 +38,11 @@ public class PositionTest {
     }
 
     @Test
+    public void testEqualNull(){
+        assertFalse(position1.equals(null));
+    }
+
+    @Test
     public void testHashCode(){
         assertEquals(Objects.hash(10, 20), position1.hashCode());
     }
