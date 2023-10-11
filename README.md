@@ -15,8 +15,8 @@ is to prevent the bird from falling to the ground or hitting a tube.
 ### User Stories:
 **Phase 0 :**
 - As a user, I want to be able to create a new game with an username of my choosing.
-- As a user, I want to be able to control the **Bird** through press of the *Space* key or the right click of the mouse.
+- As a user, I want to be able to control the **Bird** through press of the *Space*.
 - As a user, I want to view the **Score** I earned during the present game and the level I'm currently at.
 - As a user, I want to be able to add my username and *Score* to the *Leaderboard* after my game is finished.
-- As a user, I want to be able to view the **Leaderboard** that contains the 5 highest **Score** and the users that achieved them.
+- As a user, I want to be able to view the **Leaderboard** that contains **Score**.
  
