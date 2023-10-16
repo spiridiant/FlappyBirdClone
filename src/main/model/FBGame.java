@@ -4,8 +4,8 @@ package model;
 import java.util.*;
 
 /**
- *      The flappy bird game board
- *      contain the bird, the tube and the ground
+ * The flappy bird game board
+ * contain the bird, the tube and the ground
  */
 public class FBGame {
 
@@ -35,8 +35,8 @@ public class FBGame {
     /**
      * MODIFIES:    this
      * EFFECT:      tick the game,
-     *              change the status of the bird base on user input
-     *              end the game base on position of the bird
+     * change the status of the bird base on user input
+     * end the game base on position of the bird
      */
     public void tick() {
         handleTubes();
@@ -54,8 +54,8 @@ public class FBGame {
     /**
      * MODIFIES:    this
      * EFFECT:      delete tube that are out of screen
-     *              generate new tube when the last tube has moved to the middle of the screen
-     *              move all tubes to the left
+     * generate new tube when the last tube has moved to the middle of the screen
+     * move all tubes to the left
      */
     private void handleTubes() {
         if (!tubes.isEmpty() && tubes.getFirst().getX() < 0) {
@@ -83,7 +83,7 @@ public class FBGame {
     /**
      * REQUIRES:    pos is not null
      * EFFECT:      Returns whether a given position is above ground
-     *              and has not collided with a tube
+     * and has not collided with a tube
      */
     public boolean isValidPosition(Position pos) {
         return !hasFallen(pos) && !hasCollided(pos);
@@ -93,18 +93,17 @@ public class FBGame {
      * REQUIRES:    pos is not null
      * MODIFIES:    this
      * EFFECT:      check if a given position overlap with a tube
-     *              if it's passing a tube but didn't collide with it,
-     *              increment the score
+     * if it's passing a tube but didn't collide with it,
+     * increment the score
      */
     private boolean hasCollided(Position pos) {
         for (Tube tube : tubes) {
             if (tube.getX() == bird.getX()) {
-                for (Position tubePos : tube.getBody()) {
-                    if (tubePos.equals(pos)) {
-                        return true;
-                    }
+                if (pos.getY() < 0 || tube.getBody().contains(pos)) {
+                    return true;
+                } else {
+                    score.incrementScore();
                 }
-                score.incrementScore();
             }
         }
         return false;

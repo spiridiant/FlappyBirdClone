@@ -35,8 +35,8 @@ public class Position {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        Position snakeNode = (Position) o;
-        return xcoor == snakeNode.xcoor && ycoor == snakeNode.ycoor;
+        Position pos = (Position) o;
+        return xcoor == pos.xcoor && ycoor == pos.ycoor;
     }
 
     /**

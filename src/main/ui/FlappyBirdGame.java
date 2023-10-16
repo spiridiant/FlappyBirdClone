@@ -45,8 +45,20 @@ public class FlappyBirdGame {
     }
 
     /**
+     * From SnakeConsole
+     * EFFECT:      Begins the game cycle. Ticks once every Game.TICKS_PER_SECOND until
+     *              game has ended and the endGui has been exited.
+     */
+    private void beginTicks() throws IOException, InterruptedException {
+        while (!game.isEnded() || endGui.getActiveWindow() != null) {
+            tick();
+            Thread.sleep(1000L / game.TICKS_PER_SECOND);
+        }
+    }
+
+    /**
      * From SnakeConsole with changes
-     * MODIFIES: this
+     * MODIFIES:    this
      * EFFECT:      Handles one cycle in the game by taking user input,
      *              ticking the game internally, and rendering the effects
      */
@@ -96,17 +108,7 @@ public class FlappyBirdGame {
         }
     }
 
-    /**
-     * From SnakeConsole
-     * EFFECT:      Begins the game cycle. Ticks once every Game.TICKS_PER_SECOND until
-     *              game has ended and the endGui has been exited.
-     */
-    private void beginTicks() throws IOException, InterruptedException {
-        while (!game.isEnded() || endGui.getActiveWindow() != null) {
-            tick();
-            Thread.sleep(1000L / game.TICKS_PER_SECOND);
-        }
-    }
+
 
     /**
      * From SnakeConsole with changes

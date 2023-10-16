@@ -2,11 +2,12 @@ package model;
 
 import java.util.ArrayDeque;
 import java.util.Deque;
+import java.util.HashSet;
 
 
 /**
- *      Represent the tube in the game
- *      the tube has two parts with a space between
+ * Represent the tube in the game
+ * the tube has two parts with a space between
  */
 public class Tube {
     private Deque<Position> body;
@@ -27,9 +28,10 @@ public class Tube {
     /**
      * MODIFIES:    this
      * EFFECT:      fill all the position that forms the body of the tube
+     * fill the space hash set
      */
     private void fillBody() {
-        for (int i = 0; i < spaceStart; i++) {
+        for (int i = -1; i < spaceStart; i++) {
             body.add(new Position(xcoor, i));
         }
 

@@ -1,13 +1,19 @@
 package model;
 
+import org.json.JSONObject;
+import org.json.JSONArray;
+import org.json.JSONObject;
+import persistence.Writable;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 /**
- *      The leaderboard that stores the scores of the players
+ * The leaderboard that stores the scores of the players
  */
-public class Leaderboard {
+public class Leaderboard implements Writable {
+
     private List<Score> scores;
 
     public Leaderboard() {
@@ -26,5 +32,22 @@ public class Leaderboard {
 
     public List<Score> getScores() {
         return scores;
+    }
+
+    @Override
+    public JSONObject toJson() {
+        JSONObject json = new JSONObject();
+        json.put("scores", scoresToJson());
+        return json;
+    }
+
+    private JSONArray scoresToJson() {
+        JSONArray jsonArray = new JSONArray();
+
+        for (Score score : scores) {
+            jsonArray.put(score.toJson());
+        }
+
+        return jsonArray;
     }
 }

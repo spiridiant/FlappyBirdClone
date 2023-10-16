@@ -1,9 +1,12 @@
 package model;
 
+import org.json.JSONObject;
+import persistence.Writable;
+
 /**
- *      Represents the score of the player, stores the points and username
+ * Represents the score of the player, stores the points and username
  */
-public class Score implements Comparable<Score> {
+public class Score implements Comparable<Score>, Writable {
 
     private String username;
     private int points;
@@ -11,6 +14,11 @@ public class Score implements Comparable<Score> {
     public Score() {
         this.username = null;
         this.points = 0;
+    }
+
+    public Score(String username, int points) {
+        this.username = username;
+        this.points = points;
     }
 
     /**
@@ -23,6 +31,10 @@ public class Score implements Comparable<Score> {
 
     public int getPoints() {
         return points;
+    }
+
+    public void setPoints(int points) {
+        this.points = points;
     }
 
     public String getUsername() {
@@ -40,5 +52,13 @@ public class Score implements Comparable<Score> {
     @Override
     public int compareTo(Score other) {
         return Integer.compare(other.points, this.points);
+    }
+
+    @Override
+    public JSONObject toJson() {
+        JSONObject json = new JSONObject();
+        json.put("username", username);
+        json.put("points", points);
+        return json;
     }
 }
