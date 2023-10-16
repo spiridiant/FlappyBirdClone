@@ -1,9 +1,12 @@
 package model;
 
+import org.json.JSONObject;
+import persistence.Writable;
+
 /**
  * Represents the bird in the game
  */
-public class Bird {
+public class Bird implements Writable {
 
     private final int flapLength = -7;
     private final int fallLength = 1;
@@ -53,5 +56,13 @@ public class Bird {
 
     public void setFlapping(boolean flapping) {
         this.flapping = flapping;
+    }
+
+    @Override
+    public JSONObject toJson() {
+        JSONObject json = new JSONObject();
+        json.put("x", xcoor);
+        json.put("y", ycoor);
+        return json;
     }
 }

@@ -1,12 +1,15 @@
 package model;
 
+import org.json.JSONObject;
+import persistence.Writable;
+
 import java.util.Objects;
 
 /**
  * From SnakeConsole
  * Represents a position in the game space.
  */
-public class Position {
+public class Position{
     private int xcoor;
     private int ycoor;
 
@@ -46,4 +49,10 @@ public class Position {
     public int hashCode() {
         return Objects.hash(xcoor, ycoor);
     }
+
+//    @Override
+//    public JSONObject toJson() {
+//        JSONObject jsonObject = new JSONObject();
+//
+//    }
 }

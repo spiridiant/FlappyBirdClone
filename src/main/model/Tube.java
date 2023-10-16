@@ -1,5 +1,8 @@
 package model;
 
+import org.json.JSONObject;
+import persistence.Writable;
+
 import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.HashSet;
@@ -9,7 +12,7 @@ import java.util.HashSet;
  * Represent the tube in the game
  * the tube has two parts with a space between
  */
-public class Tube {
+public class Tube implements Writable {
     private Deque<Position> body;
     private int xcoor;
     private int spaceStart;
@@ -64,4 +67,13 @@ public class Tube {
     }
 
 
+    @Override
+    public JSONObject toJson() {
+        JSONObject json = new JSONObject();
+        json.put("x", xcoor);
+        json.put("spaceStart", spaceStart);
+        json.put("spaceEnd", spaceEnd);
+        json.put("maxY", maxY);
+        return json;
+    }
 }

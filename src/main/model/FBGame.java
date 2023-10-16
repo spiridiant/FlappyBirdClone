@@ -1,13 +1,17 @@
 package model;
 
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+import persistence.Writable;
+
 import java.util.*;
 
 /**
  * The flappy bird game board
  * contain the bird, the tube and the ground
  */
-public class FBGame {
+public class FBGame implements Writable {
 
     public static final int TICKS_PER_SECOND = 5;
     private Bird bird;
@@ -20,13 +24,26 @@ public class FBGame {
     private List<Position> ground;
 
     public FBGame(int maxX, int maxY) {
+        this.maxX = maxX;
+        this.maxY = maxY;
         score = new Score();
         bird = new Bird(maxX / 2, maxY / 2);
         tubes = new ArrayDeque<>();
         random = new Random();
         ground = new ArrayList<>();
+        for (int i = 0; i <= maxX; i++) {
+            ground.add(new Position(i, maxY));
+        }
+    }
+
+    public FBGame(int maxX, int maxY, Bird bird, Score score, Deque<Tube> tubes) {
         this.maxX = maxX;
         this.maxY = maxY;
+        this.score = score;
+        this.bird = bird;
+        this.tubes = tubes;
+        random = new Random();
+        ground = new ArrayList<>();
         for (int i = 0; i <= maxX; i++) {
             ground.add(new Position(i, maxY));
         }
@@ -135,5 +152,26 @@ public class FBGame {
 
     public List<Position> getGround() {
         return ground;
+    }
+
+    @Override
+    public JSONObject toJson() {
+        JSONObject json = new JSONObject();
+        json.put("maxX", maxX);
+        json.put("maxY", maxY);
+        json.put("score", score.toJson());
+        json.put("bird", bird.toJson());
+        json.put("tubes", tubesToJson());
+        return json;
+    }
+
+    private JSONArray tubesToJson() {
+        JSONArray jsonArray = new JSONArray();
+
+        for (Tube tube : tubes) {
+            jsonArray.put(tube.toJson());
+        }
+
+        return jsonArray;
     }
 }

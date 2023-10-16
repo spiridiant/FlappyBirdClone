@@ -33,10 +33,6 @@ public class Score implements Comparable<Score>, Writable {
         return points;
     }
 
-    public void setPoints(int points) {
-        this.points = points;
-    }
-
     public String getUsername() {
         return username;
     }
