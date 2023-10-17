@@ -43,8 +43,8 @@ public class FBGameJsonReader {
     private FBGame parseFBGame(JSONObject jsonObject) {
         int maxX = jsonObject.getInt("maxX");
         int maxY = jsonObject.getInt("maxY");
-        Bird bird = readBird(jsonObject);
-        Score score = readScore(jsonObject);
+        Bird bird = readBird(jsonObject.getJSONObject("bird"));
+        Score score = readScore(jsonObject.getJSONObject("score"));
         Deque<Tube> tubes = readTubes(jsonObject);
 
         FBGame game = new FBGame(maxX, maxY, bird, score, tubes);
@@ -64,14 +64,14 @@ public class FBGameJsonReader {
     private Tube readTube(JSONObject jsonObject) {
         int x = jsonObject.getInt("x");
         int spaceStarts = jsonObject.getInt("spaceStart");
-        int spaceEnds = jsonObject.getInt("spaceEnds");
+        int spaceEnds = jsonObject.getInt("spaceEnd");
         int maxY = jsonObject.getInt("maxY");
         Tube tube = new Tube(x, spaceStarts, spaceEnds, maxY);
         return tube;
     }
 
     private Score readScore(JSONObject jsonObject) {
-        Score score = new Score(jsonObject.getString("username"), jsonObject.getInt("points"));
+        Score score = new Score("", jsonObject.getInt("points"));
         return score;
     }
 

@@ -48,14 +48,10 @@ public class Tube implements Writable {
      * EFFECT:      move the tube to the left by one
      */
     public void moveLeft() {
-        int size = body.size();
         xcoor--;
-        for (int i = 0; i < size; i++) {
-            int y = body.getFirst().getY();
-            body.add(new Position(xcoor, y));
-            body.removeFirst();
+        for (Position pos : body) {
+            pos.toLeft();
         }
-
     }
 
     public Deque<Position> getBody() {
