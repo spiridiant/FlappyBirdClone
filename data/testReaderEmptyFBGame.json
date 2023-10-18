@@ -1,0 +1,26 @@
+{
+  "score": {
+    "username": "",
+    "points": 16
+  },
+  "maxY": 22,
+  "tubes": [
+    {
+      "spaceStart": 1,
+      "maxY": 22,
+      "x": 2,
+      "spaceEnd": 9
+    },
+    {
+      "spaceStart": 8,
+      "maxY": 22,
+      "x": 23,
+      "spaceEnd": 16
+    }
+  ],
+  "maxX": 39,
+  "bird": {
+    "x": 19,
+    "y": 19
+  }
+}

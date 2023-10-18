@@ -9,7 +9,7 @@ import java.util.Objects;
  * From SnakeConsole
  * Represents a position in the game space.
  */
-public class Position{
+public class Position {
     private int xcoor;
     private int ycoor;
 
@@ -24,6 +24,10 @@ public class Position{
 
     public int getY() {
         return ycoor;
+    }
+
+    public void toLeft() {
+        xcoor--;
     }
 
     /**
@@ -53,6 +57,8 @@ public class Position{
 //    @Override
 //    public JSONObject toJson() {
 //        JSONObject jsonObject = new JSONObject();
-//
+//        jsonObject.put("x", xcoor);
+//        jsonObject.put("y", ycoor);
+//        return jsonObject;
 //    }
 }

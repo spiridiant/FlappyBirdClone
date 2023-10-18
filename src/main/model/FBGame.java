@@ -154,6 +154,10 @@ public class FBGame implements Writable {
         return ground;
     }
 
+    /**
+     * MODIFIES:    this
+     * Effect:      convert the instance of this object to json format
+     */
     @Override
     public JSONObject toJson() {
         JSONObject json = new JSONObject();
@@ -165,6 +169,9 @@ public class FBGame implements Writable {
         return json;
     }
 
+    /**
+     * Effect:      convert the tubes to json format
+     */
     private JSONArray tubesToJson() {
         JSONArray jsonArray = new JSONArray();
 

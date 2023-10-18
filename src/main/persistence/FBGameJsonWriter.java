@@ -8,6 +8,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 
+
+// Write the state of FBGame to destinated file
 public class FBGameJsonWriter {
     private static final int TAB = 4;
     private PrintWriter writer;
@@ -26,7 +28,7 @@ public class FBGameJsonWriter {
     }
 
     // MODIFIES: this
-    // EFFECTS: writes JSON representation of Leaderboard to file
+    // EFFECTS: writes JSON representation of FBGame to file
     public void write(FBGame game) {
         JSONObject json = game.toJson();
         saveToFile(json.toString(TAB));

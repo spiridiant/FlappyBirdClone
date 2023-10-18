@@ -13,22 +13,35 @@ import com.googlecode.lanterna.input.KeyType;
 import com.googlecode.lanterna.screen.Screen;
 import com.googlecode.lanterna.terminal.DefaultTerminalFactory;
 import model.*;
+import persistence.FBGameJsonReader;
+import persistence.FBGameJsonWriter;
+import persistence.LeaderboardJsonWriter;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 
 /**
- *      The flappy bird game in the text terminal
+ * The flappy bird game in the text terminal
  */
 public class FlappyBirdGame {
+
+    private static final String GAME_STORE = "./data/FBGame.json";
     private FBGame game;
     private Screen screen;
     private WindowBasedTextGUI endGui;
+    private FBGameJsonWriter jsonWriter;
+    private FBGameJsonReader jsonReader;
+
+    public FlappyBirdGame() {
+        jsonWriter = new FBGameJsonWriter(GAME_STORE);
+        jsonReader = new FBGameJsonReader(GAME_STORE);
+    }
 
     /**
      * From SnakeConsole with changes
      * MODIFIES:    this
      * EFFECT:      Begins the game and method does not leave execution
-     *              until game is complete.
+     * until game is complete.
      */
     public void start() throws IOException, InterruptedException {
         screen = new DefaultTerminalFactory().createScreen();
@@ -45,22 +58,62 @@ public class FlappyBirdGame {
     }
 
     /**
+     * MODIFIES:    this
+     * EFFECT:      resume the game where the user last saved
+     */
+    public void resume() throws IOException, InterruptedException {
+        screen = new DefaultTerminalFactory().createScreen();
+        screen.startScreen();
+
+        loadGame();
+
+        beginTicks();
+    }
+
+    /**
+     * EFFECT:      save the game
+     */
+    private void saveGame() {
+        try {
+            jsonWriter.open();
+            jsonWriter.write(game);
+            jsonWriter.close();
+            System.out.println("Saved current leaderboard to " + GAME_STORE);
+        } catch (FileNotFoundException e) {
+            System.out.println("Unable to write to file: " + GAME_STORE);
+        }
+    }
+
+    /**
+     * EFFECT:      load the saved game
+     */
+    private void loadGame() {
+        try {
+            game = jsonReader.read();
+            System.out.println("Loaded saved leaderboard from " + GAME_STORE);
+        } catch (IOException e) {
+            System.out.println("Unable to read from file: " + GAME_STORE);
+        }
+    }
+
+    /**
      * From SnakeConsole
      * EFFECT:      Begins the game cycle. Ticks once every Game.TICKS_PER_SECOND until
-     *              game has ended and the endGui has been exited.
+     * game has ended and the endGui has been exited.
      */
     private void beginTicks() throws IOException, InterruptedException {
         while (!game.isEnded() || endGui.getActiveWindow() != null) {
             tick();
             Thread.sleep(1000L / game.TICKS_PER_SECOND);
         }
+        screen.stopScreen();
     }
 
     /**
      * From SnakeConsole with changes
      * MODIFIES:    this
      * EFFECT:      Handles one cycle in the game by taking user input,
-     *              ticking the game internally, and rendering the effects
+     * ticking the game internally, and rendering the effects
      */
     private void tick() throws IOException {
         handleUserInput();
@@ -78,8 +131,8 @@ public class FlappyBirdGame {
     /**
      * From SnakeConsole with changes
      * EFFECT:      Renders the current screen.
-     *              Draws the end screen if the game has ended, otherwise
-     *              draws the score, snake, and food.
+     * Draws the end screen if the game has ended, otherwise
+     * draws the score, snake, and food.
      */
     private void render() {
         if (game.isEnded()) {
@@ -106,8 +159,10 @@ public class FlappyBirdGame {
         if (stroke != null && stroke.getKeyType() == KeyType.Character && stroke.getCharacter() == ' ') {
             game.getBird().flap();
         }
+        if (stroke != null && stroke.getKeyType() == KeyType.Character && stroke.getCharacter() == 's') {
+            saveGame();
+        }
     }
-
 
 
     /**
@@ -171,7 +226,7 @@ public class FlappyBirdGame {
     /**
      * From SnakeConsole with changes
      * EFFECT:      Draws a character in a given position on the terminal.
-     *              If wide, it will draw the character twice to make it appear wide.
+     * If wide, it will draw the character twice to make it appear wide.
      */
     private void drawPosition(Position pos, TextColor color, char c, boolean wide) {
         TextGraphics text = screen.newTextGraphics();

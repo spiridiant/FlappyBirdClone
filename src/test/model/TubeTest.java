@@ -15,16 +15,16 @@ public class TubeTest {
     }
 
     @Test
-    public void testConstructor(){
+    public void testConstructors(){
         assertEquals(10, tube.getX());
-        assertEquals(15, tube.getBody().size());
+        assertEquals(16, tube.getBody().size());
     }
 
     @Test
     public void testMoveLeft(){
         tube.moveLeft();
         assertEquals(9, tube.getX());
-        assertEquals(15, tube.getBody().size());
+        assertEquals(16, tube.getBody().size());
     }
 
     @Test
@@ -34,6 +34,6 @@ public class TubeTest {
         tube.moveLeft();
 
         assertEquals(7, tube.getX());
-        assertEquals(15, tube.getBody().size());
+        assertEquals(16, tube.getBody().size());
     }
 }

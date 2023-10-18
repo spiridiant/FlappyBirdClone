@@ -34,6 +34,11 @@ public class Leaderboard implements Writable {
         return scores;
     }
 
+
+    /**
+     * MODIFIES:    this
+     * Effect:      convert the instance of this object to json format
+     */
     @Override
     public JSONObject toJson() {
         JSONObject json = new JSONObject();
@@ -41,6 +46,10 @@ public class Leaderboard implements Writable {
         return json;
     }
 
+    /**
+     * MODIFIES:    this
+     * Effect:      convert the list scores to json format
+     */
     private JSONArray scoresToJson() {
         JSONArray jsonArray = new JSONArray();
 

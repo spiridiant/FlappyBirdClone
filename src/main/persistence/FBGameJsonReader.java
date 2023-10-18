@@ -12,6 +12,9 @@ import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.stream.Stream;
 
+/**
+ * Read the saved json file of a FBGame
+ */
 public class FBGameJsonReader {
     private String source;
 
@@ -20,7 +23,7 @@ public class FBGameJsonReader {
         this.source = source;
     }
 
-    // EFFECTS: reads Leaderboard from file and returns it;
+    // EFFECTS: reads FBGame from file and returns it;
     // throws IOException if an error occurs reading data from file
     public FBGame read() throws IOException {
         String jsonData = readFile(source);
@@ -39,18 +42,19 @@ public class FBGameJsonReader {
         return contentBuilder.toString();
     }
 
-    // EFFECTS: parses Leaderboard from JSON object and returns it
+    // EFFECTS: parses FBGame from JSON object and returns it
     private FBGame parseFBGame(JSONObject jsonObject) {
         int maxX = jsonObject.getInt("maxX");
         int maxY = jsonObject.getInt("maxY");
-        Bird bird = readBird(jsonObject);
-        Score score = readScore(jsonObject);
+        Bird bird = readBird(jsonObject.getJSONObject("bird"));
+        Score score = readScore(jsonObject.getJSONObject("score"));
         Deque<Tube> tubes = readTubes(jsonObject);
 
         FBGame game = new FBGame(maxX, maxY, bird, score, tubes);
         return game;
     }
 
+    // EFFECTS: parses tubes from JSON object and returns it
     private Deque<Tube> readTubes(JSONObject jsonObject) {
         Deque<Tube> tubes = new ArrayDeque<>();
         JSONArray jsonArray = jsonObject.getJSONArray("tubes");
@@ -61,20 +65,23 @@ public class FBGameJsonReader {
         return tubes;
     }
 
+    // EFFECTS: parses tube from JSON object and returns it
     private Tube readTube(JSONObject jsonObject) {
         int x = jsonObject.getInt("x");
         int spaceStarts = jsonObject.getInt("spaceStart");
-        int spaceEnds = jsonObject.getInt("spaceEnds");
+        int spaceEnds = jsonObject.getInt("spaceEnd");
         int maxY = jsonObject.getInt("maxY");
         Tube tube = new Tube(x, spaceStarts, spaceEnds, maxY);
         return tube;
     }
 
+    // EFFECTS: parses score from JSON object and returns it
     private Score readScore(JSONObject jsonObject) {
-        Score score = new Score(jsonObject.getString("username"), jsonObject.getInt("points"));
+        Score score = new Score("", jsonObject.getInt("points"));
         return score;
     }
 
+    // EFFECTS: parses bird from JSON object and returns it
     private Bird readBird(JSONObject jsonObject) {
         Bird bird = new Bird(jsonObject.getInt("x"), jsonObject.getInt("y"));
         return bird;

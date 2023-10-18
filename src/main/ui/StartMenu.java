@@ -15,7 +15,8 @@ import java.util.Scanner;
  */
 public class StartMenu {
 
-    private static final String JSON_STORE = "./data/leaderboard.json";
+    private static final String LEADERBOARD_STORE = "./data/leaderboard.json";
+
     private Scanner input;
     private Leaderboard leaderboard;
     private LeaderboardJsonWriter jsonWriter;
@@ -25,8 +26,8 @@ public class StartMenu {
         leaderboard = new Leaderboard();
         input = new Scanner(System.in);
         input.useDelimiter("\n");
-        jsonWriter = new LeaderboardJsonWriter(JSON_STORE);
-        jsonReader = new LeaderboardJsonReader(JSON_STORE);
+        jsonWriter = new LeaderboardJsonWriter(LEADERBOARD_STORE);
+        jsonReader = new LeaderboardJsonReader(LEADERBOARD_STORE);
     }
 
     /**
@@ -59,6 +60,7 @@ public class StartMenu {
     private void displayMenu() {
         System.out.println("\nSelect from:");
         System.out.println("\tg -> start new game");
+        System.out.println("\tr -> resume saved game");
         System.out.println("\tp -> print leaderboard");
         System.out.println("\tl -> load previous leaderboard");
         System.out.println("\ts -> save current leaderboard");
@@ -72,7 +74,9 @@ public class StartMenu {
      */
     private void processCommand(String command) throws IOException, InterruptedException {
         if (command.equals("g")) {
-            doNewGame();
+            doGame(true);
+        } else if (command.equals("r")) {
+            doGame(false);
         } else if (command.equals("p")) {
             printLeaderboard();
         } else if (command.equals("l")) {
@@ -90,10 +94,14 @@ public class StartMenu {
      * when the game finished and user score is positive
      * ask for user's username to add the score to leaderboard
      */
-    private void doNewGame() throws IOException, InterruptedException {
+    private void doGame(boolean newGame) throws IOException, InterruptedException {
         FlappyBirdGame gameHandler = new FlappyBirdGame();
 
-        gameHandler.start();
+        if (newGame) {
+            gameHandler.start();
+        } else {
+            gameHandler.resume();
+        }
 
         Score score = gameHandler.getScore();
         if (score.getPoints() > 0) {
@@ -128,9 +136,9 @@ public class StartMenu {
             jsonWriter.open();
             jsonWriter.write(leaderboard);
             jsonWriter.close();
-            System.out.println("Saved current leaderboard to " + JSON_STORE);
+            System.out.println("Saved current leaderboard to " + LEADERBOARD_STORE);
         } catch (FileNotFoundException e) {
-            System.out.println("Unable to write to file: " + JSON_STORE);
+            System.out.println("Unable to write to file: " + LEADERBOARD_STORE);
         }
     }
 
@@ -139,9 +147,9 @@ public class StartMenu {
     private void loadLeaderboard() {
         try {
             leaderboard = jsonReader.read();
-            System.out.println("Loaded saved leaderboard from " + JSON_STORE);
+            System.out.println("Loaded saved leaderboard from " + LEADERBOARD_STORE);
         } catch (IOException e) {
-            System.out.println("Unable to read from file: " + JSON_STORE);
+            System.out.println("Unable to read from file: " + LEADERBOARD_STORE);
         }
     }
 

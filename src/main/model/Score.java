@@ -50,6 +50,11 @@ public class Score implements Comparable<Score>, Writable {
         return Integer.compare(other.points, this.points);
     }
 
+
+    /**
+     * MODIFIES:    this
+     * Effect:      convert the instance of this object to json format
+     */
     @Override
     public JSONObject toJson() {
         JSONObject json = new JSONObject();
