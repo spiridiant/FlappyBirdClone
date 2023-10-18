@@ -58,6 +58,10 @@ public class Bird implements Writable {
         this.flapping = flapping;
     }
 
+    /**
+     * MODIFIES:    this
+     * Effect:      convert the instance of this object to json format
+     */
     @Override
     public JSONObject toJson() {
         JSONObject json = new JSONObject();

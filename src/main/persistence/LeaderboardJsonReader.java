@@ -12,7 +12,6 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.stream.Stream;
 
-// Modelled after JsonSerializationDemo
 // Represents a reader that reads Leaderboard from JSON data stored in file
 public class LeaderboardJsonReader {
     private String source;

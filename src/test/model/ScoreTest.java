@@ -14,13 +14,11 @@ public class ScoreTest {
     public void beforeTest(){
         score1 = new Score();
         score2 = new Score();
-        score3 = new Score();
+        score3 = new Score("test3", 5);
 
         score1.setUsername("test1");
         score2.setUsername("test2");
-        score3.setUsername("test3");
         addPoints(score2, 5);
-        addPoints(score3, 5);
     }
 
     @Test

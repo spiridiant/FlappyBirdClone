@@ -15,7 +15,6 @@ import com.googlecode.lanterna.terminal.DefaultTerminalFactory;
 import model.*;
 import persistence.FBGameJsonReader;
 import persistence.FBGameJsonWriter;
-import persistence.LeaderboardJsonReader;
 import persistence.LeaderboardJsonWriter;
 
 import java.io.FileNotFoundException;
@@ -60,19 +59,20 @@ public class FlappyBirdGame {
 
     /**
      * MODIFIES:    this
-     * EFFECT:      load the saved game
+     * EFFECT:      resume the game where the user last saved
      */
     public void resume() throws IOException, InterruptedException {
         screen = new DefaultTerminalFactory().createScreen();
         screen.startScreen();
-
-        TerminalSize terminalSize = screen.getTerminalSize();
 
         loadGame();
 
         beginTicks();
     }
 
+    /**
+     * EFFECT:      save the game
+     */
     private void saveGame() {
         try {
             jsonWriter.open();
@@ -84,6 +84,9 @@ public class FlappyBirdGame {
         }
     }
 
+    /**
+     * EFFECT:      load the saved game
+     */
     private void loadGame() {
         try {
             game = jsonReader.read();

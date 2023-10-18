@@ -7,7 +7,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 
-// Modelled after JsonSerializationDemo
 // Represents a writer that writes JSON representation of Leaderboard to file
 public class LeaderboardJsonWriter {
     private static final int TAB = 4;
