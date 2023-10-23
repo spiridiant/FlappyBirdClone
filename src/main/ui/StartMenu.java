@@ -130,7 +130,7 @@ public class StartMenu {
         }
     }
 
-    // EFFECTS: saves the workroom to file
+    // EFFECTS: saves the leaderboard to file
     private void saveLeaderboard() {
         try {
             jsonWriter.open();
@@ -143,7 +143,7 @@ public class StartMenu {
     }
 
     // MODIFIES: this
-    // EFFECTS: loads workroom from file
+    // EFFECTS: loads leaderboard from file
     private void loadLeaderboard() {
         try {
             leaderboard = jsonReader.read();
