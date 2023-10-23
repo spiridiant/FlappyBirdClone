@@ -78,7 +78,7 @@ public class FlappyBirdGame {
             jsonWriter.open();
             jsonWriter.write(game);
             jsonWriter.close();
-            System.out.println("Saved current leaderboard to " + GAME_STORE);
+            System.out.println("Saved current game to " + GAME_STORE);
         } catch (FileNotFoundException e) {
             System.out.println("Unable to write to file: " + GAME_STORE);
         }
