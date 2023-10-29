@@ -26,3 +26,14 @@ is to prevent the bird from falling to the ground or hitting a tube.
 - As a user, I want to be able to resume my saved game by select the option at the start menu.
 - As a user, I want to be able to save the **Leaderboard** by selecting the option at the start menu.
 - As a user, I want to be able to load the saved **Leaderboard** by selecting the option at the start menu.
+
+
+# Instructions for Grader
+
+- You can add your **Score** to the **Leaderboard** by entering your username into the prompt box and click *Submit*
+- You can view the **Score**s in the **Leaderboard** by clicking **View Leaderboard** at Start Menu
+- You can locate my visual component by clicking *Start New Game* at Start Menu
+- You can save the state of the **Leaderboard** by clicking *Save Leaderboard* at Start Menu
+- You can reload the state of the **Leaderboard** by clicking *Load Leaderboard* at Start Menu
+- You can save the state of the **Game** by clicking save 's' at during a game
+- You can reload the state of the **Game** by clicking *Resume Game* at Start Menu
