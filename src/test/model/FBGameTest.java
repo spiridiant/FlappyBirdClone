@@ -14,33 +14,33 @@ public class FBGameTest {
 
     @Test
     public void testTick(){
-        testGame.tick();
+        testGame.update();
         assertEquals(1, testGame.getTubes().size());
         assertFalse(testGame.isEnded());
     }
 
     @Test
     public void testTickTillNewTube() {
-        testGame.tick();
-        testGame.tick();
-        testGame.tick();
-        testGame.tick();
-        testGame.tick();
+        testGame.update();
+        testGame.update();
+        testGame.update();
+        testGame.update();
+        testGame.update();
 
         assertEquals(2, testGame.getTubes().size());
     }
 
     @Test
     public void testTickTillTubeGone() {
-        testGame.tick();
+        testGame.update();
         Tube oldtube = testGame.getTubes().getFirst();
-        testGame.tick();
-        testGame.tick();
-        testGame.tick();
-        testGame.tick();
-        testGame.tick();
-        testGame.tick();
-        testGame.tick();
+        testGame.update();
+        testGame.update();
+        testGame.update();
+        testGame.update();
+        testGame.update();
+        testGame.update();
+        testGame.update();
 
         assertFalse(oldtube.equals(testGame.getTubes().getFirst()));
     }
@@ -49,16 +49,16 @@ public class FBGameTest {
     @Test
     public void testTickALot() {
         for(int i = 0; i < 1000; i++){
-            testGame.tick();
+            testGame.update();
             if(i % 7 == 0){
                 testGame.getBird().flap();
             }
         }
-        testGame.tick();
-        testGame.tick();
-        testGame.tick();
-        testGame.tick();
-        testGame.tick();
+        testGame.update();
+        testGame.update();
+        testGame.update();
+        testGame.update();
+        testGame.update();
         assertTrue(testGame.isEnded());
     }
 
@@ -66,11 +66,11 @@ public class FBGameTest {
 
     @Test
     public void testTickTillEnd() {
-        testGame.tick();
-        testGame.tick();
-        testGame.tick();
-        testGame.tick();
-        testGame.tick();
+        testGame.update();
+        testGame.update();
+        testGame.update();
+        testGame.update();
+        testGame.update();
         assertTrue(testGame.isEnded());
     }
 

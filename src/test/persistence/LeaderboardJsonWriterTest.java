@@ -28,12 +28,12 @@ public class LeaderboardJsonWriterTest {
     void testWriterEmptyLeaderboard() {
         try {
             Leaderboard lb = new Leaderboard();
-            LeaderboardJsonWriter writer = new LeaderboardJsonWriter("./data/testWriterEmptyWorkroom.json");
+            LeaderboardJsonWriter writer = new LeaderboardJsonWriter("./data/testWriterEmptyLeaderboard.json");
             writer.open();
             writer.write(lb);
             writer.close();
 
-            LeaderboardJsonReader reader = new LeaderboardJsonReader("./data/testWriterEmptyWorkroom.json");
+            LeaderboardJsonReader reader = new LeaderboardJsonReader("./data/testWriterEmptyLeaderboard.json");
             lb = reader.read();
             assertEquals(0, lb.getScores().size());
         } catch (IOException e) {
@@ -47,12 +47,12 @@ public class LeaderboardJsonWriterTest {
             Leaderboard lb = new Leaderboard();
             lb.addScore(new Score("test1", 10));
             lb.addScore(new Score("test2", 15));
-            LeaderboardJsonWriter writer = new LeaderboardJsonWriter("./data/testWriterGeneralWorkroom.json");
+            LeaderboardJsonWriter writer = new LeaderboardJsonWriter("./data/testWriterGeneralLeaderboard.json");
             writer.open();
             writer.write(lb);
             writer.close();
 
-            LeaderboardJsonReader reader = new LeaderboardJsonReader("./data/testWriterGeneralWorkroom.json");
+            LeaderboardJsonReader reader = new LeaderboardJsonReader("./data/testWriterGeneralLeaderboard.json");
             lb = reader.read();
             List<Score> scores = lb.getScores();
             assertEquals(2, scores.size());

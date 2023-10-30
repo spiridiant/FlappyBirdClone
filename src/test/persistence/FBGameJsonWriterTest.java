@@ -30,12 +30,12 @@ public class FBGameJsonWriterTest {
     void testWriterEmptyFBGame() {
         try {
             FBGame game = new FBGame(20, 20);
-            FBGameJsonWriter writer = new FBGameJsonWriter("./data/testWriterEmptyWorkroom.json");
+            FBGameJsonWriter writer = new FBGameJsonWriter("./data/testWriterEmptyFBGame.json");
             writer.open();
             writer.write(game);
             writer.close();
 
-            FBGameJsonReader reader = new FBGameJsonReader("./data/testWriterEmptyWorkroom.json");
+            FBGameJsonReader reader = new FBGameJsonReader("./data/testWriterEmptyFBGame.json");
             game = reader.read();
             assertEquals(0, game.getTubes().size());
         } catch (IOException e) {
@@ -52,12 +52,12 @@ public class FBGameJsonWriterTest {
             tubes.add(new Tube(5, 5, 10, 20));
             FBGame game = new FBGame(20, 20, bird, score, tubes);
 
-            FBGameJsonWriter writer = new FBGameJsonWriter("./data/testWriterGeneralWorkroom.json");
+            FBGameJsonWriter writer = new FBGameJsonWriter("./data/testWriterGeneralFBGame.json");
             writer.open();
             writer.write(game);
             writer.close();
 
-            FBGameJsonReader reader = new FBGameJsonReader("./data/testWriterGeneralWorkroom.json");
+            FBGameJsonReader reader = new FBGameJsonReader("./data/testWriterGeneralFBGame.json");
             game = reader.read();
             assertEquals(1, game.getTubes().size());
             assertEquals(10, game.getBird().getX());

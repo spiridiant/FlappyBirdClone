@@ -15,24 +15,28 @@ import com.googlecode.lanterna.terminal.DefaultTerminalFactory;
 import model.*;
 import persistence.FBGameJsonReader;
 import persistence.FBGameJsonWriter;
-import persistence.LeaderboardJsonWriter;
 
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
 /**
  * The flappy bird game in the text terminal
  */
-public class FlappyBirdGame {
+public class GamePanel extends JPanel {
 
     private static final String GAME_STORE = "./data/FBGame.json";
+    private static final int INTERVAL = 10;
     private FBGame game;
     private Screen screen;
     private WindowBasedTextGUI endGui;
     private FBGameJsonWriter jsonWriter;
     private FBGameJsonReader jsonReader;
 
-    public FlappyBirdGame() {
+    public GamePanel() {
         jsonWriter = new FBGameJsonWriter(GAME_STORE);
         jsonReader = new FBGameJsonReader(GAME_STORE);
     }
@@ -68,6 +72,33 @@ public class FlappyBirdGame {
         loadGame();
 
         beginTicks();
+    }
+
+    // Set up timer
+    // modifies: none
+    // effects:  initializes a timer that updates game each
+    //           INTERVAL milliseconds
+    private void addTimer() {
+        Timer t = new Timer(INTERVAL, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                game.update();
+                repaint();
+            }
+        });
+
+        t.start();
+    }
+
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+
+        drawGame(g);
+
+        if (game.isOver()) {
+            gameOver(g);
+        }
     }
 
     /**
@@ -118,11 +149,11 @@ public class FlappyBirdGame {
     private void tick() throws IOException {
         handleUserInput();
 
-        game.tick();
+        game.update();
 
         screen.setCursorPosition(new TerminalPosition(0, 0));
         screen.clear();
-        render();
+        drawGame();
         screen.refresh();
 
         screen.setCursorPosition(new TerminalPosition(screen.getTerminalSize().getColumns() - 1, 0));
@@ -134,14 +165,13 @@ public class FlappyBirdGame {
      * Draws the end screen if the game has ended, otherwise
      * draws the score, snake, and food.
      */
-    private void render() {
-        if (game.isEnded()) {
-            if (endGui == null) {
-                drawEndScreen();
-            }
-
-            return;
-        }
+    private void drawGame() {
+//        if (game.isEnded()) {
+//            if (endGui == null) {
+//                drawEndScreen();
+//            }
+//            return;
+//        }
 
         drawScore();
         drawBird();

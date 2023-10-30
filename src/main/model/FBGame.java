@@ -55,7 +55,7 @@ public class FBGame implements Writable {
      * change the status of the bird base on user input
      * end the game base on position of the bird
      */
-    public void tick() {
+    public void update() {
         handleTubes();
 
         if (!this.bird.isFlapping()) {
