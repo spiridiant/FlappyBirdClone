@@ -58,7 +58,7 @@ public class GamePanel extends JPanel {
                 terminalSize.getRows() - 2
         );
 
-        beginTicks();
+        addTimer();
     }
 
     /**
@@ -71,7 +71,7 @@ public class GamePanel extends JPanel {
 
         loadGame();
 
-        beginTicks();
+        addTimer();
     }
 
     // Set up timer
@@ -127,37 +127,6 @@ public class GamePanel extends JPanel {
         }
     }
 
-    /**
-     * From SnakeConsole
-     * EFFECT:      Begins the game cycle. Ticks once every Game.TICKS_PER_SECOND until
-     * game has ended and the endGui has been exited.
-     */
-    private void beginTicks() throws IOException, InterruptedException {
-        while (!game.isEnded() || endGui.getActiveWindow() != null) {
-            tick();
-            Thread.sleep(1000L / game.TICKS_PER_SECOND);
-        }
-        screen.stopScreen();
-    }
-
-    /**
-     * From SnakeConsole with changes
-     * MODIFIES:    this
-     * EFFECT:      Handles one cycle in the game by taking user input,
-     * ticking the game internally, and rendering the effects
-     */
-    private void tick() throws IOException {
-        handleUserInput();
-
-        game.update();
-
-        screen.setCursorPosition(new TerminalPosition(0, 0));
-        screen.clear();
-
-        screen.refresh();
-
-        screen.setCursorPosition(new TerminalPosition(screen.getTerminalSize().getColumns() - 1, 0));
-    }
 
     /**
      * From SnakeConsole with changes

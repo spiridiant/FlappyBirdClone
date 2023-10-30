@@ -36,7 +36,6 @@ public class LeaderboardPanel extends JPanel {
         jsonReader = new LeaderboardJsonReader(LEADERBOARD_STORE);
 
         this.setPreferredSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
-        List<Score> scores = leaderboard.getScores();
 
         JPanel board = new JPanel();
         board.setPreferredSize(new Dimension(PANEL_WIDTH, BOARD_HEIGHT));
@@ -57,8 +56,22 @@ public class LeaderboardPanel extends JPanel {
         top.add(load);
         top.setBackground(Color.blue);
 
+        add(top);
+        add(Box.createVerticalStrut(0));
+        add(board);
+    }
+
+    private void updateScores() {
+        List<Score> scores = leaderboard.getScores();
         for (int i = 0; i < max(scores.size(), 3); i++) {
-            if (i == 0) {
+            if ((i == 0 || i == 1 || i == 3) && i == scores.size()) {
+                labels.get(i).setText("Vacant");
+            }
+            labels.add(new JLabel(scores.get(i).getUsername() + "    " + scores.get(i).getPoints()));
+        }
+    }
+
+    private void renderLabels() {
                 JLabel gold = new JLabel();
                 gold.setBackground(new Color(255, 255, 0));
                 gold.setOpaque(true);
@@ -70,7 +83,6 @@ public class LeaderboardPanel extends JPanel {
                 } else {
                     gold.setText("Empty");
                 }
-                board.add(gold);
             } else if (i == 1) {
                 JLabel silver = new JLabel();
                 silver.setBackground(new Color(222, 222, 222));
@@ -83,8 +95,6 @@ public class LeaderboardPanel extends JPanel {
                 } else {
                     silver.setText("Empty");
                 }
-                board.add(silver);
-            } else if (i == 2) {
                 JLabel bronze = new JLabel();
                 bronze.setBackground(new Color(255, 111, 0));
                 bronze.setOpaque(true);
@@ -96,15 +106,7 @@ public class LeaderboardPanel extends JPanel {
                 } else {
                     bronze.setText("Empty");
                 }
-                board.add(bronze);
-            } else {
-                board.add(new JLabel(scores.get(i).getUsername() + "    " + scores.get(i).getPoints()));
-            }
         }
-
-        add(top);
-        add(Box.createVerticalStrut(0));
-        add(board);
     }
 
     // EFFECTS: saves the leaderboard to file
