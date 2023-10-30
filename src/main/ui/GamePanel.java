@@ -96,9 +96,9 @@ public class GamePanel extends JPanel {
 
         drawGame(g);
 
-        if (game.isOver()) {
-            gameOver(g);
-        }
+//        if (game.isOver()) {
+//            gameOver(g);
+//        }
     }
 
     /**
@@ -153,7 +153,7 @@ public class GamePanel extends JPanel {
 
         screen.setCursorPosition(new TerminalPosition(0, 0));
         screen.clear();
-        drawGame();
+
         screen.refresh();
 
         screen.setCursorPosition(new TerminalPosition(screen.getTerminalSize().getColumns() - 1, 0));
@@ -165,7 +165,7 @@ public class GamePanel extends JPanel {
      * Draws the end screen if the game has ended, otherwise
      * draws the score, snake, and food.
      */
-    private void drawGame() {
+    private void drawGame(Graphics g) {
 //        if (game.isEnded()) {
 //            if (endGui == null) {
 //                drawEndScreen();
@@ -173,10 +173,10 @@ public class GamePanel extends JPanel {
 //            return;
 //        }
 
-        drawScore();
-        drawBird();
-        drawTubes();
-        drawGround();
+        drawScore(g);
+        drawBird(g);
+        drawTubes(g);
+        drawGround(g);
     }
 
 
@@ -214,7 +214,7 @@ public class GamePanel extends JPanel {
      * From SnakeConsole with changes
      * EFFECT:      draw the score panel in game
      */
-    private void drawScore() {
+    private void drawScore(Graphics g) {
         TextGraphics text = screen.newTextGraphics();
         text.setBackgroundColor(TextColor.ANSI.RED);
         text.setForegroundColor(TextColor.ANSI.WHITE);
@@ -229,7 +229,7 @@ public class GamePanel extends JPanel {
     /**
      * EFFECT:      draw the tubes on the terminal
      */
-    private void drawTubes() {
+    private void drawTubes(Graphics g) {
         for (Tube tube : game.getTubes()) {
             for (Position pos : tube.getBody()) {
                 drawPosition(pos, TextColor.ANSI.GREEN, '|', true);
@@ -240,14 +240,14 @@ public class GamePanel extends JPanel {
     /**
      * EFFECT:      draw the bird on the terminal
      */
-    private void drawBird() {
+    private void drawBird(Graphics g) {
         drawPosition(game.getBird().getPosition(), TextColor.ANSI.RED, '%', false);
     }
 
     /**
      * EFFECT:      draw the ground on the terminal
      */
-    private void drawGround() {
+    private void drawGround(Graphics g) {
         for (Position pos : game.getGround()) {
             drawPosition(pos, TextColor.ANSI.CYAN, '*', true);
         }
