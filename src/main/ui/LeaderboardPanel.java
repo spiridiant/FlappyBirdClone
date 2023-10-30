@@ -32,6 +32,7 @@ public class LeaderboardPanel extends JPanel {
         this.cl = cl;
         this.flappyBird = flappyBird;
         this.leaderboard = leaderboard;
+        this.labels = new ArrayList<>();
         jsonWriter = new LeaderboardJsonWriter(LEADERBOARD_STORE);
         jsonReader = new LeaderboardJsonReader(LEADERBOARD_STORE);
 
@@ -41,6 +42,11 @@ public class LeaderboardPanel extends JPanel {
         board.setPreferredSize(new Dimension(PANEL_WIDTH, BOARD_HEIGHT));
         board.setBackground(Color.cyan);
         board.setLayout(new BoxLayout(board, BoxLayout.Y_AXIS));
+
+        updateScores();
+        for (int i = 0; i < labels.size(); i++) {
+            board.add(labels.get(i));
+        }
 
         JButton back = new JButton("Back to the Menu");
         back.addActionListener(e -> cl.show(flappyBird, "menu"));
@@ -64,49 +70,37 @@ public class LeaderboardPanel extends JPanel {
     private void updateScores() {
         List<Score> scores = leaderboard.getScores();
         for (int i = 0; i < max(scores.size(), 3); i++) {
-            if ((i == 0 || i == 1 || i == 3) && i == scores.size()) {
+            labels.add(new JLabel());
+            if ((i == 0 || i == 1 || i == 2) && i >= scores.size()) {
                 labels.get(i).setText("Vacant");
+            } else {
+                labels.get(i).setText(scores.get(i).getUsername() + "    " + scores.get(i).getPoints());
             }
-            labels.add(new JLabel(scores.get(i).getUsername() + "    " + scores.get(i).getPoints()));
         }
+        renderLabels();
     }
 
     private void renderLabels() {
-                JLabel gold = new JLabel();
-                gold.setBackground(new Color(255, 255, 0));
-                gold.setOpaque(true);
-                gold.setVerticalAlignment(JLabel.CENTER);
-                gold.setHorizontalAlignment(JLabel.CENTER);
-                gold.setAlignmentX(Component.CENTER_ALIGNMENT);
-                if (i < scores.size()) {
-                    gold.setText("Gold: " + scores.get(i).getUsername() + "    " + scores.get(i).getPoints());
-                } else {
-                    gold.setText("Empty");
-                }
-            } else if (i == 1) {
-                JLabel silver = new JLabel();
-                silver.setBackground(new Color(222, 222, 222));
-                silver.setOpaque(true);
-                silver.setVerticalAlignment(JLabel.CENTER);
-                silver.setHorizontalAlignment(JLabel.CENTER);
-                silver.setAlignmentX(Component.CENTER_ALIGNMENT);
-                if (i < scores.size()) {
-                    silver.setText("Silver: " + scores.get(i).getUsername() + "    " + scores.get(i).getPoints());
-                } else {
-                    silver.setText("Empty");
-                }
-                JLabel bronze = new JLabel();
-                bronze.setBackground(new Color(255, 111, 0));
-                bronze.setOpaque(true);
-                bronze.setVerticalAlignment(JLabel.CENTER);
-                bronze.setHorizontalAlignment(JLabel.CENTER);
-                bronze.setAlignmentX(Component.CENTER_ALIGNMENT);
-                if (i < scores.size()) {
-                    bronze.setText("Bronze: " + scores.get(i).getUsername() + "    " + scores.get(i).getPoints());
-                } else {
-                    bronze.setText("Empty");
-                }
-        }
+        JLabel gold = labels.get(0);
+        gold.setBackground(new Color(255, 255, 0));
+        gold.setOpaque(true);
+        gold.setVerticalAlignment(JLabel.CENTER);
+        gold.setHorizontalAlignment(JLabel.CENTER);
+        gold.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        JLabel silver = labels.get(1);
+        silver.setBackground(new Color(222, 222, 222));
+        silver.setOpaque(true);
+        silver.setVerticalAlignment(JLabel.CENTER);
+        silver.setHorizontalAlignment(JLabel.CENTER);
+        silver.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        JLabel bronze = labels.get(2);
+        bronze.setBackground(new Color(255, 111, 0));
+        bronze.setOpaque(true);
+        bronze.setVerticalAlignment(JLabel.CENTER);
+        bronze.setHorizontalAlignment(JLabel.CENTER);
+        bronze.setAlignmentX(Component.CENTER_ALIGNMENT);
     }
 
     // EFFECTS: saves the leaderboard to file
