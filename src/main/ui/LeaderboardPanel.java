@@ -27,6 +27,8 @@ public class LeaderboardPanel extends JPanel {
     private CardLayout cl;
     private JPanel flappyBird;
     private ArrayList<JLabel> labels;
+    private JPanel board;
+    private JPanel topBar;
 
     public LeaderboardPanel(Leaderboard leaderboard, CardLayout cl, JPanel flappyBird) {
         this.cl = cl;
@@ -38,16 +40,17 @@ public class LeaderboardPanel extends JPanel {
 
         this.setPreferredSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
 
-        JPanel board = new JPanel();
-        board.setPreferredSize(new Dimension(PANEL_WIDTH, BOARD_HEIGHT));
-        board.setBackground(Color.cyan);
-        board.setLayout(new BoxLayout(board, BoxLayout.Y_AXIS));
+        makeBoard();
+        updateBoard();
 
-        updateScores();
-        for (int i = 0; i < labels.size(); i++) {
-            board.add(labels.get(i));
-        }
+        makeTopBar();
 
+        add(topBar);
+        add(Box.createVerticalStrut(0));
+        add(board);
+    }
+
+    private void makeTopBar() {
         JButton back = new JButton("Back to the Menu");
         back.addActionListener(e -> cl.show(flappyBird, "menu"));
         JButton save = new JButton("Save");
@@ -55,52 +58,66 @@ public class LeaderboardPanel extends JPanel {
         JButton load = new JButton("Load");
         load.addActionListener(e -> loadLeaderboard());
 
-        JPanel top = new JPanel();
-        top.setPreferredSize(new Dimension(PANEL_WIDTH, TOP_HEIGHT));
-        top.add(back);
-        top.add(save);
-        top.add(load);
-        top.setBackground(Color.blue);
+        topBar = new JPanel();
+        topBar.setPreferredSize(new Dimension(PANEL_WIDTH, TOP_HEIGHT));
+        topBar.add(back);
+        topBar.add(save);
+        topBar.add(load);
+        topBar.setBackground(Color.gray);
+    }
 
-        add(top);
-        add(Box.createVerticalStrut(0));
-        add(board);
+    private void makeBoard() {
+        board = new JPanel();
+        board.setPreferredSize(new Dimension(PANEL_WIDTH, BOARD_HEIGHT));
+        board.setBackground(Color.cyan);
+        board.setLayout(new BoxLayout(board, BoxLayout.Y_AXIS));
+    }
+
+    private void updateBoard() {
+        board.removeAll();
+        board.add(Box.createVerticalStrut(20));
+        updateScores();
+        for (int i = 0; i < labels.size(); i++) {
+            board.add(labels.get(i));
+            board.add(Box.createVerticalStrut(5));
+        }
+        board.revalidate();
+        board.repaint();
     }
 
     private void updateScores() {
+        labels.clear();
         List<Score> scores = leaderboard.getScores();
         for (int i = 0; i < max(scores.size(), 3); i++) {
             labels.add(new JLabel());
             if ((i == 0 || i == 1 || i == 2) && i >= scores.size()) {
                 labels.get(i).setText("Vacant");
             } else {
-                labels.get(i).setText(scores.get(i).getUsername() + "    " + scores.get(i).getPoints());
+                labels.get(i).setText(String.format("%-16s %-3s",
+                        scores.get(i).getUsername(), scores.get(i).getPoints()));
             }
+            labels.get(i).setBackground(new Color(255, 255, 255));
+            labels.get(i).setMaximumSize(new Dimension(100, 30));
+            labels.get(i).setMinimumSize(new Dimension(50, 20));
+            labels.get(i).setPreferredSize(new Dimension(50, 20));
+            labels.get(i).setBorder(BorderFactory.createLineBorder(Color.blue, 2));
+            labels.get(i).setOpaque(true);
+            labels.get(i).setVerticalAlignment(JLabel.CENTER);
+            labels.get(i).setHorizontalAlignment(JLabel.CENTER);
+            labels.get(i).setAlignmentX(Component.CENTER_ALIGNMENT);
         }
-        renderLabels();
+        renderTopThree();
     }
 
-    private void renderLabels() {
+    private void renderTopThree() {
         JLabel gold = labels.get(0);
-        gold.setBackground(new Color(255, 255, 0));
-        gold.setOpaque(true);
-        gold.setVerticalAlignment(JLabel.CENTER);
-        gold.setHorizontalAlignment(JLabel.CENTER);
-        gold.setAlignmentX(Component.CENTER_ALIGNMENT);
+        gold.setBackground(new Color(255, 234, 0));
 
         JLabel silver = labels.get(1);
-        silver.setBackground(new Color(222, 222, 222));
-        silver.setOpaque(true);
-        silver.setVerticalAlignment(JLabel.CENTER);
-        silver.setHorizontalAlignment(JLabel.CENTER);
-        silver.setAlignmentX(Component.CENTER_ALIGNMENT);
+        silver.setBackground(new Color(213, 213, 213));
 
         JLabel bronze = labels.get(2);
-        bronze.setBackground(new Color(255, 111, 0));
-        bronze.setOpaque(true);
-        bronze.setVerticalAlignment(JLabel.CENTER);
-        bronze.setHorizontalAlignment(JLabel.CENTER);
-        bronze.setAlignmentX(Component.CENTER_ALIGNMENT);
+        bronze.setBackground(new Color(208, 93, 0));
     }
 
     // EFFECTS: saves the leaderboard to file
@@ -120,17 +137,10 @@ public class LeaderboardPanel extends JPanel {
     private void loadLeaderboard() {
         try {
             leaderboard = jsonReader.read();
+            updateBoard();
             System.out.println("Loaded saved leaderboard from " + LEADERBOARD_STORE);
         } catch (IOException e) {
             System.out.println("Unable to read from file: " + LEADERBOARD_STORE);
         }
     }
-
-//        if (scores.isEmpty()) {
-//        System.out.println("\nNo records yet, go play a game!");
-//    }
-//        System.out.println();
-//        for (int i = 0; i < scores.size(); i++) {
-//        System.out.println("User: " + scores.get(i).getUsername() + "  Score: " + scores.get(i).getPoints());
-//    }
 }

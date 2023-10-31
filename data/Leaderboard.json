@@ -1,1 +1,42 @@
-{"scores": []}
+{"scores": [
+    {
+        "username": "William",
+        "points": 10
+    },
+    {
+        "username": "Emma",
+        "points": 9
+    },
+    {
+        "username": "James",
+        "points": 8
+    },
+    {
+        "username": "Ava",
+        "points": 7
+    },
+    {
+        "username": "Noah",
+        "points": 6
+    },
+    {
+        "username": "Mia",
+        "points": 6
+    },
+    {
+        "username": "Olivia",
+        "points": 5
+    },
+    {
+        "username": "Eli",
+        "points": 4
+    },
+    {
+        "username": "Sophia",
+        "points": 3
+    },
+    {
+        "username": "Liam",
+        "points": 2
+    }
+]}
