@@ -38,6 +38,7 @@ public class LeaderboardPanel extends JPanel {
         jsonWriter = new LeaderboardJsonWriter(LEADERBOARD_STORE);
         jsonReader = new LeaderboardJsonReader(LEADERBOARD_STORE);
 
+        setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         this.setPreferredSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
 
         makeBoard();
@@ -90,7 +91,7 @@ public class LeaderboardPanel extends JPanel {
         List<Score> scores = leaderboard.getScores();
         for (int i = 0; i < max(scores.size(), 3); i++) {
             labels.add(new JLabel());
-            if ((i == 0 || i == 1 || i == 2) && i >= scores.size()) {
+            if (i >= scores.size() && (i == 0 || i == 1 || i == 2)) {
                 labels.get(i).setText("Vacant");
             } else {
                 labels.get(i).setText(String.format("%-16s %-3s",
@@ -136,7 +137,11 @@ public class LeaderboardPanel extends JPanel {
     // EFFECTS: loads leaderboard from file
     private void loadLeaderboard() {
         try {
-            leaderboard = jsonReader.read();
+            leaderboard.getScores().clear();
+            Leaderboard loaded = jsonReader.read();
+            for (Score score : loaded.getScores()) {
+                leaderboard.addScore(score);
+            }
             updateBoard();
             System.out.println("Loaded saved leaderboard from " + LEADERBOARD_STORE);
         } catch (IOException e) {

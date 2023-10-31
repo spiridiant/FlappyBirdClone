@@ -6,7 +6,6 @@ import persistence.LeaderboardJsonReader;
 
 import javax.swing.*;
 import java.awt.*;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import static java.lang.System.exit;
@@ -27,24 +26,19 @@ public class StartMenuPanel extends JPanel {
     private JButton resume;
     private JButton view;
     private JButton quit;
-
-    private Leaderboard leaderboard;
-    private LeaderboardJsonWriter jsonWriter;
-    private LeaderboardJsonReader jsonReader;
     private CardLayout cl;
     private JPanel flappyBird;
+    private Leaderboard leaderboard;
 
-    public StartMenuPanel(CardLayout cl, JPanel flappyBird) {
+
+    public StartMenuPanel(Leaderboard leaderboard, CardLayout cl, JPanel flappyBird) {
         this.setPreferredSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
         setLayout(null);
         addButtons();
+        this.leaderboard = leaderboard;
 
         this.cl = cl;
         this.flappyBird = flappyBird;
-
-        leaderboard = new Leaderboard();
-        jsonWriter = new LeaderboardJsonWriter(LEADERBOARD_STORE);
-        jsonReader = new LeaderboardJsonReader(LEADERBOARD_STORE);
     }
 
     /**
@@ -91,7 +85,7 @@ public class StartMenuPanel extends JPanel {
                 throw new RuntimeException(ex);
             }
         });
-        view.addActionListener(e -> printLeaderboard());
+        view.addActionListener(e -> viewLeaderboard());
         quit.addActionListener(e -> exit(0));
     }
 
@@ -102,53 +96,24 @@ public class StartMenuPanel extends JPanel {
      * ask for user's username to add the score to leaderboard
      */
     private void doGame(boolean newGame) throws IOException, InterruptedException {
-        GamePanel gameHandler = new GamePanel();
+        GamePanel gameHandler = new GamePanel(leaderboard, cl, flappyBird);
+        flappyBird.add(gameHandler, "game");
 
         if (newGame) {
+            System.out.println("game start");
             gameHandler.start();
         } else {
             gameHandler.resume();
         }
-
-        Score score = gameHandler.getScore();
-        if (score.getPoints() > 0) {
-            System.out.println("Enter your username to add your score to the leaderboard.");
-            String username = " ";
-            if (username != null || username.length() > 0) {
-                score.setUsername(username);
-                leaderboard.addScore(score);
-            }
-        }
-
     }
+
     /**
      * EFFECT:      display the leaderboard with an order from highest to lowest score
      * if there's no record yet tell the user to play a game
      */
-    private void printLeaderboard() {
+    private void viewLeaderboard() {
+        LeaderboardPanel leaderboardPanel = new LeaderboardPanel(leaderboard, cl, flappyBird);
+        flappyBird.add(leaderboardPanel, "leaderboard");
         cl.show(flappyBird, "leaderboard");
-    }
-
-    // EFFECTS: saves the leaderboard to file
-    private void saveLeaderboard() {
-        try {
-            jsonWriter.open();
-            jsonWriter.write(leaderboard);
-            jsonWriter.close();
-            System.out.println("Saved current leaderboard to " + LEADERBOARD_STORE);
-        } catch (FileNotFoundException e) {
-            System.out.println("Unable to write to file: " + LEADERBOARD_STORE);
-        }
-    }
-
-    // MODIFIES: this
-    // EFFECTS: loads leaderboard from file
-    private void loadLeaderboard() {
-        try {
-            leaderboard = jsonReader.read();
-            System.out.println("Loaded saved leaderboard from " + LEADERBOARD_STORE);
-        } catch (IOException e) {
-            System.out.println("Unable to read from file: " + LEADERBOARD_STORE);
-        }
     }
 }

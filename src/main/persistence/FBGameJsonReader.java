@@ -44,13 +44,10 @@ public class FBGameJsonReader {
 
     // EFFECTS: parses FBGame from JSON object and returns it
     private FBGame parseFBGame(JSONObject jsonObject) {
-        int maxX = jsonObject.getInt("maxX");
-        int maxY = jsonObject.getInt("maxY");
         Bird bird = readBird(jsonObject.getJSONObject("bird"));
         Score score = readScore(jsonObject.getJSONObject("score"));
         Deque<Tube> tubes = readTubes(jsonObject);
-
-        FBGame game = new FBGame(maxX, maxY, bird, score, tubes);
+        FBGame game = new FBGame(bird, score, tubes);
         return game;
     }
 

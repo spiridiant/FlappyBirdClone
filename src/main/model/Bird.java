@@ -3,15 +3,26 @@ package model;
 import org.json.JSONObject;
 import persistence.Writable;
 
+import java.awt.*;
+
 /**
  * Represents the bird in the game
  */
 public class Bird implements Writable {
 
-    private final int flapLength = -7;
-    private final int fallLength = 1;
+    public static final int SIZE_X = 20;
+    public static final int SIZE_Y = 15;
+    public static final int fallLength = 2;
+    private static final int flapLength = -100;
+    public static final Color COLOR = Color.RED;
+
     private int xcoor;
     private int ycoor;
+
+    public int getY() {
+        return ycoor;
+    }
+
     private boolean flapping;
 
     public Bird(int x, int y) {
@@ -20,9 +31,6 @@ public class Bird implements Writable {
         flapping = false;
     }
 
-    public Position getPosition() {
-        return new Position(xcoor, ycoor);
-    }
 
     /**
      * REQUIRES:    flapping is false

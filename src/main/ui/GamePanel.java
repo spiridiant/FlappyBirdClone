@@ -18,27 +18,58 @@ import persistence.FBGameJsonWriter;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.*;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
 /**
  * The flappy bird game in the text terminal
  */
-public class GamePanel extends JPanel {
+public class GamePanel extends JPanel implements KeyListener, MouseListener {
 
     private static final String GAME_STORE = "./data/FBGame.json";
     private static final int INTERVAL = 10;
+    private static final int PANEL_WIDTH = 600;
+    private static final int PANEL_HEIGHT = 500;
+    private static final int GROUND_HEIGHT = 5;
+
     private FBGame game;
-    private Screen screen;
-    private WindowBasedTextGUI endGui;
+    private Leaderboard leaderboard;
+    private CardLayout cl;
+    private JPanel flappyBird;
+    private JPanel gameOverPanel;
     private FBGameJsonWriter jsonWriter;
     private FBGameJsonReader jsonReader;
+    private Timer timer;
+    private JLabel score;
 
-    public GamePanel() {
-        jsonWriter = new FBGameJsonWriter(GAME_STORE);
-        jsonReader = new FBGameJsonReader(GAME_STORE);
+    public GamePanel(Leaderboard leaderboard, CardLayout cl, JPanel flappyBird) {
+        this.jsonWriter = new FBGameJsonWriter(GAME_STORE);
+        this.jsonReader = new FBGameJsonReader(GAME_STORE);
+        this.leaderboard = leaderboard;
+        this.cl = cl;
+        this.flappyBird = flappyBird;
+        this.game = new FBGame();
+        makeGamerOverPanel();
+        flappyBird.add(gameOverPanel, "over");
+        setFocusable(true);
+        addKeyListener(this);
+        addMouseListener(this);
+        setFocusable(true);
+        requestFocusInWindow();
+
+        score = new JLabel(String.valueOf(game.getScore().getPoints()));
+        score.setForeground(Color.white);
+        score.setOpaque(false);
+        score.setHorizontalAlignment(SwingConstants.CENTER);
+        score.setFont(new Font("MV Boli", Font.PLAIN, 50));
+
+        add(score, BorderLayout.NORTH);
+
+        setPreferredSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
+        setBackground(new Color(13, 101, 175, 255));
+
+        addTimer();
     }
 
     /**
@@ -47,31 +78,18 @@ public class GamePanel extends JPanel {
      * EFFECT:      Begins the game and method does not leave execution
      * until game is complete.
      */
-    public void start() throws IOException, InterruptedException {
-        screen = new DefaultTerminalFactory().createScreen();
-        screen.startScreen();
-
-        TerminalSize terminalSize = screen.getTerminalSize();
-
-        game = new FBGame(
-                (terminalSize.getColumns() - 1) / 2,
-                terminalSize.getRows() - 2
-        );
-
-        addTimer();
+    public void start() {
+        cl.show(flappyBird, "game");
+        timer.start();
     }
 
     /**
      * MODIFIES:    this
      * EFFECT:      resume the game where the user last saved
      */
-    public void resume() throws IOException, InterruptedException {
-        screen = new DefaultTerminalFactory().createScreen();
-        screen.startScreen();
-
+    public void resume() {
         loadGame();
-
-        addTimer();
+        start();
     }
 
     // Set up timer
@@ -79,26 +97,59 @@ public class GamePanel extends JPanel {
     // effects:  initializes a timer that updates game each
     //           INTERVAL milliseconds
     private void addTimer() {
-        Timer t = new Timer(INTERVAL, new ActionListener() {
+        timer = new Timer(INTERVAL, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
+                if (game.isEnded()) {
+                    cl.show(flappyBird, "over");
+                    timer.stop();
+                }
                 game.update();
                 repaint();
             }
         });
-
-        t.start();
     }
 
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-
         drawGame(g);
+        updateScore();
+    }
 
-//        if (game.isOver()) {
-//            gameOver(g);
-//        }
+    private void makeGamerOverPanel() {
+        gameOverPanel = new JPanel();
+        JTextField textField = new JTextField("Enter your username here");
+        textField.addFocusListener(new FocusAdapter() {
+            public void focusGained(FocusEvent e) {
+                JTextField source = (JTextField)e.getComponent();
+                source.setText("");
+                source.removeFocusListener(this);
+            }
+        });
+        textField.setPreferredSize(new Dimension(200,30));
+        JButton restart = new JButton("restart");
+        JButton add = new JButton("Add to Leaderboard");
+        JButton back = new JButton("Back to the Menu");
+        add.addActionListener((ActionEvent e) -> {
+            String username = textField.getText();
+            leaderboard.addScore(new Score(username, game.getScore().getPoints()));
+        });
+        restart.addActionListener((ActionEvent e) -> {
+            game = new FBGame();
+            start();
+        });
+        back.addActionListener((ActionEvent e) -> {
+            cl.show(flappyBird, "menu");
+        });
+        gameOverPanel.add(textField);
+        gameOverPanel.add(add);
+        gameOverPanel.add(restart);
+        gameOverPanel.add(back);
+    }
+
+    private void updateScore() {
+        score.setText(String.valueOf(game.getScore().getPoints()));
     }
 
     /**
@@ -135,74 +186,24 @@ public class GamePanel extends JPanel {
      * draws the score, snake, and food.
      */
     private void drawGame(Graphics g) {
-//        if (game.isEnded()) {
-//            if (endGui == null) {
-//                drawEndScreen();
-//            }
-//            return;
-//        }
-
-        drawScore(g);
-        drawBird(g);
         drawTubes(g);
+        drawBird(g);
         drawGround(g);
     }
 
-
-    /**
-     * MODIFIES:    this
-     * EFFECT:      Sets the birds flappy state user's keystroke
-     */
-    private void handleUserInput() throws IOException {
-        KeyStroke stroke = screen.pollInput();
-        if (stroke != null && stroke.getKeyType() == KeyType.Character && stroke.getCharacter() == ' ') {
-            game.getBird().flap();
-        }
-        if (stroke != null && stroke.getKeyType() == KeyType.Character && stroke.getCharacter() == 's') {
-            saveGame();
-        }
-    }
-
-
-    /**
-     * From SnakeConsole with changes
-     * EFFECT:      draw the end screen when the game ends
-     */
-    private void drawEndScreen() {
-        endGui = new MultiWindowTextGUI(screen);
-
-        new MessageDialogBuilder()
-                .setTitle("Game over!")
-                .setText("You finished with a score of " + game.getScore().getPoints() + "!")
-                .addButton(MessageDialogButton.Close)
-                .build()
-                .showDialog(endGui);
-    }
-
-    /**
-     * From SnakeConsole with changes
-     * EFFECT:      draw the score panel in game
-     */
-    private void drawScore(Graphics g) {
-        TextGraphics text = screen.newTextGraphics();
-        text.setBackgroundColor(TextColor.ANSI.RED);
-        text.setForegroundColor(TextColor.ANSI.WHITE);
-        text.putString(1, 0, "Score: ");
-
-        text = screen.newTextGraphics();
-        text.setBackgroundColor(TextColor.ANSI.RED);
-        text.setForegroundColor(TextColor.ANSI.WHITE);
-        text.putString(8, 0, String.valueOf(game.getScore().getPoints()));
-    }
 
     /**
      * EFFECT:      draw the tubes on the terminal
      */
     private void drawTubes(Graphics g) {
         for (Tube tube : game.getTubes()) {
-            for (Position pos : tube.getBody()) {
-                drawPosition(pos, TextColor.ANSI.GREEN, '|', true);
-            }
+            Color savedCol = g.getColor();
+            g.setColor(tube.COLOR);
+
+            g.fillRect(tube.getX(), 0, tube.WIDTH, tube.getSpaceStart());
+            g.fillRect(tube.getX(), tube.getSpaceEnd(), tube.WIDTH, PANEL_HEIGHT);
+
+            g.setColor(savedCol);
         }
     }
 
@@ -210,34 +211,78 @@ public class GamePanel extends JPanel {
      * EFFECT:      draw the bird on the terminal
      */
     private void drawBird(Graphics g) {
-        drawPosition(game.getBird().getPosition(), TextColor.ANSI.RED, '%', false);
+        Color savedCol = g.getColor();
+        g.setColor(game.getBird().COLOR);
+        g.fillOval(game.getBird().getX(), game.getBird().getY(), game.getBird().SIZE_X, game.getBird().SIZE_Y);
+        g.setColor(savedCol);
     }
 
     /**
      * EFFECT:      draw the ground on the terminal
      */
     private void drawGround(Graphics g) {
-        for (Position pos : game.getGround()) {
-            drawPosition(pos, TextColor.ANSI.CYAN, '*', true);
-        }
-    }
-
-    /**
-     * From SnakeConsole with changes
-     * EFFECT:      Draws a character in a given position on the terminal.
-     * If wide, it will draw the character twice to make it appear wide.
-     */
-    private void drawPosition(Position pos, TextColor color, char c, boolean wide) {
-        TextGraphics text = screen.newTextGraphics();
-        text.setForegroundColor(color);
-        text.putString(pos.getX() * 2, pos.getY() + 1, String.valueOf(c));
-
-        if (wide) {
-            text.putString(pos.getX() * 2 + 1, pos.getY() + 1, String.valueOf(c));
-        }
+        Color savedCol = g.getColor();
+        g.setColor(Color.GRAY);
+        g.fillRect(0, PANEL_HEIGHT - GROUND_HEIGHT, PANEL_WIDTH, GROUND_HEIGHT);
+        g.setColor(savedCol);
     }
 
     public Score getScore() {
         return game.getScore();
+    }
+
+    @Override
+    public void keyTyped(KeyEvent e) {
+        char keyChar = e.getKeyChar();
+        if (keyChar == 's' || keyChar == 'S') {
+            saveGame();
+        } else if (e.getKeyCode() == KeyEvent.VK_SPACE) {
+            game.getBird().flap();
+        }
+    }
+
+    @Override
+    public void keyPressed(KeyEvent e) {
+        char keyChar = e.getKeyChar();
+        if (keyChar == 's' || keyChar == 'S') {
+            saveGame();
+        } else if (e.getKeyCode() == KeyEvent.VK_SPACE) {
+            game.getBird().flap();
+        }
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
+        char keyChar = e.getKeyChar();
+        if (keyChar == 's' || keyChar == 'S') {
+            saveGame();
+        } else if (e.getKeyCode() == KeyEvent.VK_SPACE) {
+            game.getBird().flap();
+        }
+    }
+
+    @Override
+    public void mouseClicked(MouseEvent e) {
+        game.getBird().flap();
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e) {
+
     }
 }

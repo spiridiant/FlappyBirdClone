@@ -13,40 +13,30 @@ import java.util.*;
  */
 public class FBGame implements Writable {
 
-    public static final int TICKS_PER_SECOND = 5;
+    public static final int WIDTH = 600;
+    public static final int HEIGHT = 500;
+
     private Bird bird;
     private Deque<Tube> tubes;
     private Score score;
     private boolean ended = false;
-    private int maxX;
-    private int maxY;
     private Random random;
-    private List<Position> ground;
+    private Set<Tube> pastTubes;
 
-    public FBGame(int maxX, int maxY) {
-        this.maxX = maxX;
-        this.maxY = maxY;
+    public FBGame() {
         score = new Score();
-        bird = new Bird(maxX / 2, maxY / 2);
+        bird = new Bird(WIDTH / 2, HEIGHT / 2);
         tubes = new ArrayDeque<>();
         random = new Random();
-        ground = new ArrayList<>();
-        for (int i = 0; i <= maxX; i++) {
-            ground.add(new Position(i, maxY));
-        }
+        pastTubes = new HashSet<>();
     }
 
-    public FBGame(int maxX, int maxY, Bird bird, Score score, Deque<Tube> tubes) {
-        this.maxX = maxX;
-        this.maxY = maxY;
+    public FBGame(Bird bird, Score score, Deque<Tube> tubes) {
         this.score = score;
         this.bird = bird;
         this.tubes = tubes;
         random = new Random();
-        ground = new ArrayList<>();
-        for (int i = 0; i <= maxX; i++) {
-            ground.add(new Position(i, maxY));
-        }
+        pastTubes = new HashSet<>();
     }
 
     /**
@@ -61,7 +51,7 @@ public class FBGame implements Writable {
         if (!this.bird.isFlapping()) {
             bird.falls();
         }
-        if (!isValidPosition(this.bird.getPosition())) {
+        if (!isValidPosition(bird.getX(), bird.getY())) {
             ended = true;
         }
         bird.setFlapping(false);
@@ -75,10 +65,11 @@ public class FBGame implements Writable {
      * move all tubes to the left
      */
     private void handleTubes() {
-        if (!tubes.isEmpty() && tubes.getFirst().getX() < 0) {
+        if (!tubes.isEmpty() && tubes.getFirst().getX() + tubes.getFirst().WIDTH < 0) {
+            pastTubes.remove(tubes.getFirst());
             tubes.removeFirst();
         }
-        if (tubes.isEmpty() || tubes.getLast().getX() < maxX / 2) {
+        if (tubes.isEmpty() || tubes.getLast().getX() < WIDTH / 2) {
             genNewTube();
         }
         for (Tube t : tubes) {
@@ -91,9 +82,9 @@ public class FBGame implements Writable {
      * EFFECT:      add a new tube with specified space between two parts of the body
      */
     private void genNewTube() {
-        int spaceLength = maxY / 5 * 2;
-        int spaceStart = random.nextInt(maxY - spaceLength);
-        Tube newTube = new Tube(maxX, spaceStart, spaceStart + spaceLength, maxY);
+        int spaceLength = HEIGHT / 5 * 2;
+        int spaceStart = random.nextInt(HEIGHT - spaceLength);
+        Tube newTube = new Tube(WIDTH, spaceStart, spaceStart + spaceLength, HEIGHT);
         tubes.add(newTube);
     }
 
@@ -102,8 +93,8 @@ public class FBGame implements Writable {
      * EFFECT:      Returns whether a given position is above ground
      * and has not collided with a tube
      */
-    public boolean isValidPosition(Position pos) {
-        return !hasFallen(pos) && !hasCollided(pos);
+    private boolean isValidPosition(int x, int y) {
+        return !hasFallen(y) && !hasCollided(x, y);
     }
 
     /**
@@ -113,13 +104,17 @@ public class FBGame implements Writable {
      * if it's passing a tube but didn't collide with it,
      * increment the score
      */
-    private boolean hasCollided(Position pos) {
+    private boolean hasCollided(int x, int y) {
         for (Tube tube : tubes) {
-            if (tube.getX() == bird.getX()) {
-                if (pos.getY() < 0 || tube.getBody().contains(pos)) {
-                    return true;
+            if (x >= tube.getX() && x <= tube.getX() + tube.WIDTH) {
+                if (y >= tube.getSpaceStart() && y < tube.getSpaceEnd()) {
+                    if (!pastTubes.contains(tube)) {
+                        score.incrementScore();
+                        pastTubes.add(tube);
+                    }
+                    return false;
                 } else {
-                    score.incrementScore();
+                    return true;
                 }
             }
         }
@@ -130,8 +125,8 @@ public class FBGame implements Writable {
      * REQUIRES:    pos is not null
      * EFFECT:      check if a given position has fall on the ground
      */
-    private boolean hasFallen(Position pos) {
-        return pos.getY() >= maxY;
+    private boolean hasFallen(int y) {
+        return y >= HEIGHT;
     }
 
     public Score getScore() {
@@ -150,10 +145,6 @@ public class FBGame implements Writable {
         return bird;
     }
 
-    public List<Position> getGround() {
-        return ground;
-    }
-
     /**
      * MODIFIES:    this
      * Effect:      convert the instance of this object to json format
@@ -161,8 +152,6 @@ public class FBGame implements Writable {
     @Override
     public JSONObject toJson() {
         JSONObject json = new JSONObject();
-        json.put("maxX", maxX);
-        json.put("maxY", maxY);
         json.put("score", score.toJson());
         json.put("bird", bird.toJson());
         json.put("tubes", tubesToJson());

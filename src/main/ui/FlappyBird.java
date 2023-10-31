@@ -1,17 +1,22 @@
 package ui;
 
 import model.Leaderboard;
+import model.Score;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
 import java.io.IOException;
 
 /**
- *      The main class that starts the program
+ * The main class that starts the program
  */
 public class FlappyBird extends JFrame {
 
     private JPanel flappyBird;
+    private JPanel gameOverPanel;
+    private String username;
+    private Leaderboard leaderboard;
 
     public FlappyBird() {
         super("Flappy Bird");
@@ -22,11 +27,11 @@ public class FlappyBird extends JFrame {
         flappyBird = new JPanel();
         CardLayout cl = new CardLayout();
         flappyBird.setLayout(cl);
+        leaderboard = new Leaderboard();
 
-        StartMenuPanel startMenuPanel = new StartMenuPanel(cl, flappyBird);
+        StartMenuPanel startMenuPanel = new StartMenuPanel(leaderboard, cl, flappyBird);
         flappyBird.add(startMenuPanel, "menu");
-        LeaderboardPanel leaderboardPanel = new LeaderboardPanel(new Leaderboard(), cl, flappyBird);
-        flappyBird.add(leaderboardPanel, "leaderboard");
+
         cl.show(flappyBird, "menu");
 
         add(flappyBird);
@@ -34,6 +39,8 @@ public class FlappyBird extends JFrame {
         centreOnScreen();
         setVisible(true);
     }
+
+
 
     // Centres frame on desktop, from SpaceInvader
     // modifies: this

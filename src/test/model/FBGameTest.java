@@ -9,7 +9,7 @@ public class FBGameTest {
     private FBGame testGame;
     @BeforeEach
     public void beforeTest(){
-        testGame = new FBGame(6, 10);
+        testGame = new FBGame();
     }
 
     @Test
