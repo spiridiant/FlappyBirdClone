@@ -18,7 +18,6 @@ public class LeaderboardPanel extends JPanel {
 
     private static final String LEADERBOARD_STORE = "./data/Leaderboard.json";
     private static final int TOP_HEIGHT = 30;
-    private static final int BOARD_HEIGHT = 470;
     private static final int PANEL_WIDTH = 600;
     private static final int PANEL_HEIGHT = 500;
     private LeaderboardJsonWriter jsonWriter;
@@ -29,6 +28,7 @@ public class LeaderboardPanel extends JPanel {
     private ArrayList<JLabel> labels;
     private JPanel board;
     private JPanel topBar;
+    private JScrollPane scrollPane;
 
     public LeaderboardPanel(Leaderboard leaderboard, CardLayout cl, JPanel flappyBird) {
         this.cl = cl;
@@ -48,7 +48,8 @@ public class LeaderboardPanel extends JPanel {
 
         add(topBar);
         add(Box.createVerticalStrut(0));
-        add(board);
+
+        add(scrollPane);
     }
 
     private void makeTopBar() {
@@ -69,7 +70,9 @@ public class LeaderboardPanel extends JPanel {
 
     private void makeBoard() {
         board = new JPanel();
-        board.setPreferredSize(new Dimension(PANEL_WIDTH, BOARD_HEIGHT));
+        scrollPane = new JScrollPane(board);
+        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+        scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         board.setBackground(Color.cyan);
         board.setLayout(new BoxLayout(board, BoxLayout.Y_AXIS));
     }
@@ -84,6 +87,8 @@ public class LeaderboardPanel extends JPanel {
         }
         board.revalidate();
         board.repaint();
+        scrollPane.revalidate();
+        scrollPane.repaint();
     }
 
     private void updateScores() {
@@ -99,14 +104,15 @@ public class LeaderboardPanel extends JPanel {
             }
             labels.get(i).setBackground(new Color(255, 255, 255));
             labels.get(i).setMaximumSize(new Dimension(100, 30));
-            labels.get(i).setMinimumSize(new Dimension(50, 20));
-            labels.get(i).setPreferredSize(new Dimension(50, 20));
+            labels.get(i).setMinimumSize(new Dimension(100, 30));
+            labels.get(i).setPreferredSize(new Dimension(100, 30));
             labels.get(i).setBorder(BorderFactory.createLineBorder(Color.blue, 2));
             labels.get(i).setOpaque(true);
             labels.get(i).setVerticalAlignment(JLabel.CENTER);
             labels.get(i).setHorizontalAlignment(JLabel.CENTER);
             labels.get(i).setAlignmentX(Component.CENTER_ALIGNMENT);
         }
+        board.setPreferredSize(new Dimension(PANEL_WIDTH, max(PANEL_HEIGHT - TOP_HEIGHT, 40 * labels.size())));
         renderTopThree();
     }
 

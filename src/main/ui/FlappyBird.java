@@ -35,6 +35,7 @@ public class FlappyBird extends JFrame {
         cl.show(flappyBird, "menu");
 
         add(flappyBird);
+        
         pack();
         centreOnScreen();
         setVisible(true);

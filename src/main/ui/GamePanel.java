@@ -55,8 +55,6 @@ public class GamePanel extends JPanel implements MouseListener {
 
         addKeyListener(new KeyHandler());
         addMouseListener(this);
-        setFocusable(true);
-        requestFocusInWindow();
 
         score = new JLabel(String.valueOf(game.getScore().getPoints()));
         score.setForeground(Color.white);
@@ -80,6 +78,10 @@ public class GamePanel extends JPanel implements MouseListener {
      */
     public void start() {
         cl.show(flappyBird, "game");
+
+        setFocusable(true);
+        requestFocusInWindow();
+
         timer.start();
     }
 
