@@ -25,7 +25,7 @@ import java.io.IOException;
 /**
  * The flappy bird game in the text terminal
  */
-public class GamePanel extends JPanel implements KeyListener, MouseListener {
+public class GamePanel extends JPanel implements MouseListener {
 
     private static final String GAME_STORE = "./data/FBGame.json";
     private static final int INTERVAL = 10;
@@ -52,8 +52,8 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener {
         this.game = new FBGame();
         makeGamerOverPanel();
         flappyBird.add(gameOverPanel, "over");
-        setFocusable(true);
-        addKeyListener(this);
+
+        addKeyListener(new KeyHandler());
         addMouseListener(this);
         setFocusable(true);
         requestFocusInWindow();
@@ -231,33 +231,22 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener {
         return game.getScore();
     }
 
-    @Override
-    public void keyTyped(KeyEvent e) {
-        char keyChar = e.getKeyChar();
-        if (keyChar == 's' || keyChar == 'S') {
-            saveGame();
-        } else if (e.getKeyCode() == KeyEvent.VK_SPACE) {
-            game.getBird().flap();
+    /*
+     * A key handler to respond to key events
+     * From SpaceInvaders
+     */
+    private class KeyHandler extends KeyAdapter {
+        @Override
+        public void keyPressed(KeyEvent e) {
+            processKey(e.getKeyCode());
         }
     }
 
-    @Override
-    public void keyPressed(KeyEvent e) {
-        char keyChar = e.getKeyChar();
-        if (keyChar == 's' || keyChar == 'S') {
-            saveGame();
-        } else if (e.getKeyCode() == KeyEvent.VK_SPACE) {
+    public void processKey(int keyCode) {
+        if (keyCode == KeyEvent.VK_SPACE) {
             game.getBird().flap();
-        }
-    }
-
-    @Override
-    public void keyReleased(KeyEvent e) {
-        char keyChar = e.getKeyChar();
-        if (keyChar == 's' || keyChar == 'S') {
+        } else if (keyCode == KeyEvent.VK_S) {
             saveGame();
-        } else if (e.getKeyCode() == KeyEvent.VK_SPACE) {
-            game.getBird().flap();
         }
     }
 
