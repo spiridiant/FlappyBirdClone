@@ -1,8 +1,6 @@
 package ui;
 
-import model.*;
-import persistence.LeaderboardJsonWriter;
-import persistence.LeaderboardJsonReader;
+import model.Leaderboard;
 
 import javax.swing.*;
 import java.awt.*;
@@ -15,8 +13,6 @@ import static java.lang.System.exit;
  * take user commands and execute them
  */
 public class StartMenuPanel extends JPanel {
-
-    private static final String LEADERBOARD_STORE = "./data/Leaderboard.json";
 
     private static final int PANEL_WIDTH = 600;
     private static final int PANEL_HEIGHT = 500;

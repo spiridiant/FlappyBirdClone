@@ -30,9 +30,10 @@ is to prevent the bird from falling to the ground or hitting a tube.
 
 # Instructions for Grader
 
-- You can add your **Score** to the **Leaderboard** by entering your username into the prompt box and click *Add to Leaderboard*
+- You can add your **Score** to the **Leaderboard** after the game is over by entering your username into the prompt box and click *Add to Leaderboard*
 - You can view the **Score**s in the **Leaderboard** by clicking **View Leaderboard** at Start Menu
 - You can locate my visual component by clicking *Start New Game* at Start Menu
+- During the game user can press *space bar* or click on window to make the bird flap
 - You can save the state of the **Leaderboard** by clicking *Save* at Leaderboard Panel
 - You can reload the state of the **Leaderboard** by clicking *Load* at Leaderboard Panel
 - You can save the state of the **Game** by clicking save 's' at during a game

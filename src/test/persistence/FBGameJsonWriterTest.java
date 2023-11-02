@@ -29,7 +29,7 @@ public class FBGameJsonWriterTest {
     @Test
     void testWriterEmptyFBGame() {
         try {
-            FBGame game = new FBGame(20, 20);
+            FBGame game = new FBGame();
             FBGameJsonWriter writer = new FBGameJsonWriter("./data/testWriterEmptyFBGame.json");
             writer.open();
             writer.write(game);

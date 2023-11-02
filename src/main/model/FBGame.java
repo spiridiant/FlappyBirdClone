@@ -106,8 +106,8 @@ public class FBGame implements Writable {
      */
     private boolean hasCollided(int x, int y) {
         for (Tube tube : tubes) {
-            if (x >= tube.getX() && x <= tube.getX() + tube.WIDTH) {
-                if (y >= tube.getSpaceStart() && y < tube.getSpaceEnd()) {
+            if (x + bird.SIZE_X >= tube.getX() && x - bird.SIZE_X <= tube.getX() + tube.WIDTH) {
+                if (y - bird.SIZE_Y >= tube.getSpaceStart() && y + bird.SIZE_Y < tube.getSpaceEnd()) {
                     if (!pastTubes.contains(tube)) {
                         score.incrementScore();
                         pastTubes.add(tube);

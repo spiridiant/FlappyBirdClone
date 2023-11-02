@@ -99,7 +99,7 @@ public class LeaderboardPanel extends JPanel {
             if (i >= scores.size() && (i == 0 || i == 1 || i == 2)) {
                 labels.get(i).setText("Vacant");
             } else {
-                labels.get(i).setText(String.format("%-16s %-3s",
+                labels.get(i).setText(String.format("%-14s %-3s",
                         scores.get(i).getUsername(), scores.get(i).getPoints()));
             }
             labels.get(i).setBackground(new Color(255, 255, 255));
@@ -127,6 +127,7 @@ public class LeaderboardPanel extends JPanel {
         bronze.setBackground(new Color(208, 93, 0));
     }
 
+    // MODIFIES: this
     // EFFECTS: saves the leaderboard to file
     private void saveLeaderboard() {
         try {

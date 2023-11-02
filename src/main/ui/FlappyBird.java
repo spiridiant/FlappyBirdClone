@@ -1,11 +1,9 @@
 package ui;
 
 import model.Leaderboard;
-import model.Score;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
 import java.io.IOException;
 
 /**
@@ -14,8 +12,6 @@ import java.io.IOException;
 public class FlappyBird extends JFrame {
 
     private JPanel flappyBird;
-    private JPanel gameOverPanel;
-    private String username;
     private Leaderboard leaderboard;
 
     public FlappyBird() {

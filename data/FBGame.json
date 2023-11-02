@@ -1,27 +1,30 @@
 {
-    "score": {"points": 13},
+    "score": {
+        "username": "",
+        "points": 21
+    },
     "tubes": [
         {
-            "spaceStart": 54,
+            "spaceStart": 8,
             "maxY": 500,
-            "x": -6,
-            "spaceEnd": 254
+            "x": -30,
+            "spaceEnd": 208
         },
         {
-            "spaceStart": 227,
+            "spaceStart": 86,
             "maxY": 500,
-            "x": 296,
-            "spaceEnd": 427
+            "x": 272,
+            "spaceEnd": 286
         },
         {
-            "spaceStart": 232,
+            "spaceStart": 24,
             "maxY": 500,
-            "x": 598,
-            "spaceEnd": 432
+            "x": 574,
+            "spaceEnd": 224
         }
     ],
     "bird": {
         "x": 300,
-        "y": 302
+        "y": 196
     }
 }
