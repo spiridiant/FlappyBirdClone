@@ -17,6 +17,8 @@ public class TubeTest {
     @Test
     public void testConstructors(){
         assertEquals(10, tube.getX());
+        assertEquals(5, tube.getSpaceStart());
+        assertEquals(10, tube.getSpaceEnd());
     }
 
     @Test
