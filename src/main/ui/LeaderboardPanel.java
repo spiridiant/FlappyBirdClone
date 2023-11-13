@@ -14,6 +14,9 @@ import java.util.List;
 
 import static java.lang.Math.max;
 
+/**
+ *  The panel that display the leaderboard, allow user to save and laod leaderboard
+ */
 public class LeaderboardPanel extends JPanel {
 
     private static final String LEADERBOARD_STORE = "./data/Leaderboard.json";
@@ -31,6 +34,13 @@ public class LeaderboardPanel extends JPanel {
     private JScrollPane scrollPane;
 
     public LeaderboardPanel(Leaderboard leaderboard, CardLayout cl, JPanel flappyBird) {
+        try {
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
+
         this.cl = cl;
         this.flappyBird = flappyBird;
         this.leaderboard = leaderboard;
@@ -52,6 +62,10 @@ public class LeaderboardPanel extends JPanel {
         add(scrollPane);
     }
 
+    /**
+     * MODIFIES:    this
+     * EFFECT:      make the top bar with buttons
+     */
     private void makeTopBar() {
         JButton back = new JButton("Back to the Menu");
         back.addActionListener(e -> cl.show(flappyBird, "menu"));
@@ -65,9 +79,13 @@ public class LeaderboardPanel extends JPanel {
         topBar.add(back);
         topBar.add(save);
         topBar.add(load);
-        topBar.setBackground(Color.gray);
+        topBar.setBackground(new Color(0, 49, 208));
     }
 
+    /**
+     * MODIFIES:    this
+     * EFFECT:      make the leaderboard
+     */
     private void makeBoard() {
         board = new JPanel();
         scrollPane = new JScrollPane(board);
@@ -77,6 +95,10 @@ public class LeaderboardPanel extends JPanel {
         board.setLayout(new BoxLayout(board, BoxLayout.Y_AXIS));
     }
 
+    /**
+     * MODIFIES:    this
+     * EFFECT:      update the leaderboard with current scores
+     */
     private void updateBoard() {
         board.removeAll();
         board.add(Box.createVerticalStrut(20));
@@ -91,6 +113,10 @@ public class LeaderboardPanel extends JPanel {
         scrollPane.repaint();
     }
 
+    /**
+     * MODIFIES:    this
+     * EFFECT:      update all scores by eliminate old scores and add new ones
+     */
     private void updateScores() {
         labels.clear();
         List<Score> scores = leaderboard.getScores();
@@ -99,7 +125,7 @@ public class LeaderboardPanel extends JPanel {
             if (i >= scores.size() && (i == 0 || i == 1 || i == 2)) {
                 labels.get(i).setText("Vacant");
             } else {
-                labels.get(i).setText(String.format("%-14s %-3s",
+                labels.get(i).setText(String.format("%-12s %-3s",
                         scores.get(i).getUsername(), scores.get(i).getPoints()));
             }
             labels.get(i).setBackground(new Color(255, 255, 255));
@@ -116,6 +142,10 @@ public class LeaderboardPanel extends JPanel {
         renderTopThree();
     }
 
+    /**
+     * MODIFIES:    this
+     * EFFECT:      render the top three scores to gold silver and bronze
+     */
     private void renderTopThree() {
         JLabel gold = labels.get(0);
         gold.setBackground(new Color(255, 234, 0));

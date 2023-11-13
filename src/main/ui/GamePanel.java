@@ -14,7 +14,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 
 /**
- * The flappy bird game in the text terminal
+ * The Game panel that display the game and handle user input
  */
 public class GamePanel extends JPanel implements MouseListener {
 
@@ -28,37 +28,49 @@ public class GamePanel extends JPanel implements MouseListener {
     private Leaderboard leaderboard;
     private CardLayout cl;
     private JPanel flappyBird;
-    private JPanel gameOverPanel;
+    private JPanel gameOver;
     private FBGameJsonWriter jsonWriter;
     private FBGameJsonReader jsonReader;
     private Timer timer;
     private JLabel score;
 
     public GamePanel(Leaderboard leaderboard, CardLayout cl, JPanel flappyBird) {
+        try {
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
         this.jsonWriter = new FBGameJsonWriter(GAME_STORE);
         this.jsonReader = new FBGameJsonReader(GAME_STORE);
         this.leaderboard = leaderboard;
         this.cl = cl;
         this.flappyBird = flappyBird;
         this.game = new FBGame();
-        makeGamerOverPanel();
-        flappyBird.add(gameOverPanel, "over");
+        makeGamerOver();
+        flappyBird.add(gameOver, "over");
 
         addKeyListener(new KeyHandler());
         addMouseListener(this);
 
-        score = new JLabel(String.valueOf(game.getScore().getPoints()));
-        score.setForeground(Color.white);
-        score.setOpaque(false);
-        score.setHorizontalAlignment(SwingConstants.CENTER);
-        score.setFont(new Font("MV Boli", Font.PLAIN, 50));
+        initScore();
 
         add(score, BorderLayout.NORTH);
 
         setPreferredSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
         setBackground(new Color(13, 101, 175, 255));
-
         addTimer();
+    }
+
+    /**
+     * MODIFIES:    this
+     * EFFECT:      Initialize the displayed score
+     */
+    public void initScore() {
+        score = new JLabel(String.valueOf(game.getScore().getPoints()));
+        score.setForeground(Color.white);
+        score.setOpaque(false);
+        score.setHorizontalAlignment(SwingConstants.CENTER);
+        score.setFont(new Font("MV Boli", Font.PLAIN, 50));
     }
 
     /**
@@ -110,9 +122,31 @@ public class GamePanel extends JPanel implements MouseListener {
         updateScore();
     }
 
-    private void makeGamerOverPanel() {
-        gameOverPanel = new JPanel();
+
+    /**
+     * MODIFIES:    this
+     * EFFECT:      make the game over interface
+     */
+    private void makeGamerOver() {
+        gameOver = new JPanel();
+
         JTextField textField = new JTextField("Enter your username here");
+        JButton restart = new JButton("restart");
+        JButton add = new JButton("Add to Leaderboard");
+        JButton back = new JButton("Back to the Menu");
+        makeGameOverElements(textField, restart, add, back);
+
+        gameOver.add(textField);
+        gameOver.add(add);
+        gameOver.add(restart);
+        gameOver.add(back);
+    }
+
+    /**
+     * MODIFIES:    this
+     * EFFECT:      make the textfields and buttons in the game over interface
+     */
+    private void makeGameOverElements(JTextField textField, JButton restart, JButton add, JButton back) {
         textField.addFocusListener(new FocusAdapter() {
             public void focusGained(FocusEvent e) {
                 JTextField source = (JTextField)e.getComponent();
@@ -121,9 +155,7 @@ public class GamePanel extends JPanel implements MouseListener {
             }
         });
         textField.setPreferredSize(new Dimension(200,30));
-        JButton restart = new JButton("restart");
-        JButton add = new JButton("Add to Leaderboard");
-        JButton back = new JButton("Back to the Menu");
+
         add.addActionListener((ActionEvent e) -> {
             String username = textField.getText();
             leaderboard.addScore(new Score(username, game.getScore().getPoints()));
@@ -135,12 +167,12 @@ public class GamePanel extends JPanel implements MouseListener {
         back.addActionListener((ActionEvent e) -> {
             cl.show(flappyBird, "menu");
         });
-        gameOverPanel.add(textField);
-        gameOverPanel.add(add);
-        gameOverPanel.add(restart);
-        gameOverPanel.add(back);
     }
 
+    /**
+     * MODIFIES:    this
+     * EFFECT:      update the displayed score
+     */
     private void updateScore() {
         score.setText(String.valueOf(game.getScore().getPoints()));
     }

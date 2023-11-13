@@ -17,7 +17,7 @@ public class BirdTest {
     @Test
     public void testConstructor(){
         assertEquals(10, bird.getX());
-        assertEquals(new Position(10, 10), bird.getPosition());
+        assertEquals(10, bird.getY());
         assertFalse(bird.isFlapping());
         bird.setFlapping(true);
         assertTrue(bird.isFlapping());
@@ -27,7 +27,7 @@ public class BirdTest {
     public void testFlap(){
         bird.flap();
         assertTrue(bird.isFlapping());
-        assertEquals(new Position(10, 3), bird.getPosition());
+        assertEquals(10 + bird.flapLength, bird.getY());
     }
 
     @Test
@@ -35,14 +35,14 @@ public class BirdTest {
         bird.flap();
         bird.flap();
         assertTrue(bird.isFlapping());
-        assertEquals(new Position(10, -4), bird.getPosition());
+        assertEquals(10 + bird.flapLength  * 2, bird.getY());
     }
 
     @Test
     public void testFall(){
         bird.falls();
         assertFalse(bird.isFlapping());
-        assertEquals(new Position(10, 11), bird.getPosition());
+        assertEquals(10 + bird.fallLength, bird.getY());
     }
 
     @Test
@@ -50,7 +50,7 @@ public class BirdTest {
         bird.falls();
         bird.falls();
         assertFalse(bird.isFlapping());
-        assertEquals(new Position(10, 12), bird.getPosition());
+        assertEquals(10 + bird.fallLength * 2, bird.getY());
     }
 
 

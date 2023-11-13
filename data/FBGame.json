@@ -2,20 +2,20 @@
     "score": {"points": 5},
     "tubes": [
         {
-            "spaceStart": 115,
+            "spaceStart": 151,
             "maxY": 500,
-            "x": 202,
-            "spaceEnd": 315
+            "x": 96,
+            "spaceEnd": 351
         },
         {
-            "spaceStart": 259,
+            "spaceStart": 252,
             "maxY": 500,
-            "x": 504,
-            "spaceEnd": 459
+            "x": 398,
+            "spaceEnd": 452
         }
     ],
     "bird": {
         "x": 300,
-        "y": 224
+        "y": 228
     }
 }

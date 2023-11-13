@@ -15,6 +15,7 @@ import java.util.HashSet;
  */
 public class Tube implements Writable {
     public static final int WIDTH = 30;
+    public static final int leftLength = -2;
     public static final Color COLOR = Color.GREEN;
     private int xcoor;
 
@@ -43,7 +44,7 @@ public class Tube implements Writable {
      * EFFECT:      move the tube to the left by one
      */
     public void moveLeft() {
-        xcoor -= 2;
+        xcoor += leftLength;
     }
 
     public int getX() {

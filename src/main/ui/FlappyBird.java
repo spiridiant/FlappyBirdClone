@@ -14,6 +14,7 @@ public class FlappyBird extends JFrame {
     private JPanel flappyBird;
     private Leaderboard leaderboard;
 
+    // Initialize the game window
     public FlappyBird() {
         super("Flappy Bird");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

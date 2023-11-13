@@ -3,14 +3,12 @@
         "username": "test",
         "points": 10
     },
-    "maxY": 20,
     "tubes": [{
         "spaceStart": 5,
         "maxY": 20,
         "x": 5,
         "spaceEnd": 10
     }],
-    "maxX": 20,
     "bird": {
         "x": 10,
         "y": 10

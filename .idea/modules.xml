@@ -4,7 +4,6 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/../../Labs/B02-SpaceInvadersBase/B02-SpaceInvadersBase.iml" filepath="$PROJECT_DIR$/../../Labs/B02-SpaceInvadersBase/B02-SpaceInvadersBase.iml" />
       <module fileurl="file://$PROJECT_DIR$/../../Labs/B02-SpaceInvadersBase/B02-SpaceInvadersBase1.iml" filepath="$PROJECT_DIR$/../../Labs/B02-SpaceInvadersBase/B02-SpaceInvadersBase1.iml" />
-      <module fileurl="file://$PROJECT_DIR$/../../Labs/B02-SpaceInvadersBase/B02-SpaceInvadersBase2.iml" filepath="$PROJECT_DIR$/../../Labs/B02-SpaceInvadersBase/B02-SpaceInvadersBase2.iml" />
       <module fileurl="file://$PROJECT_DIR$/Project-Starter.iml" filepath="$PROJECT_DIR$/Project-Starter.iml" />
     </modules>
   </component>

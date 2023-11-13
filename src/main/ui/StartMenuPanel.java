@@ -28,6 +28,12 @@ public class StartMenuPanel extends JPanel {
 
 
     public StartMenuPanel(Leaderboard leaderboard, CardLayout cl, JPanel flappyBird) {
+        try {
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
         this.setPreferredSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
         setLayout(null);
         addButtons();

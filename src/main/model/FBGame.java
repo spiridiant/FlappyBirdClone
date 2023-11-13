@@ -93,7 +93,7 @@ public class FBGame implements Writable {
      * EFFECT:      Returns whether a given position is above ground
      * and has not collided with a tube
      */
-    private boolean isValidPosition(int x, int y) {
+    public boolean isValidPosition(int x, int y) {
         return !hasFallen(y) && !hasCollided(x, y);
     }
 
@@ -106,8 +106,8 @@ public class FBGame implements Writable {
      */
     private boolean hasCollided(int x, int y) {
         for (Tube tube : tubes) {
-            if (x + bird.SIZE_X >= tube.getX() && x - bird.SIZE_X <= tube.getX() + tube.WIDTH) {
-                if (y - bird.SIZE_Y >= tube.getSpaceStart() && y + bird.SIZE_Y < tube.getSpaceEnd()) {
+            if (x + bird.SIZE_X >= tube.getX() && x <= tube.getX() + tube.WIDTH) {
+                if (y >= tube.getSpaceStart() && y + bird.SIZE_Y < tube.getSpaceEnd()) {
                     if (!pastTubes.contains(tube)) {
                         score.incrementScore();
                         pastTubes.add(tube);

@@ -17,7 +17,7 @@ public class FBGameJsonWriterTest {
     @Test
     void testWriterInvalidFile() {
         try {
-            FBGame game = new FBGame(20, 20);
+            FBGame game = new FBGame();
             FBGameJsonWriter writer = new FBGameJsonWriter("./data/my\0illegal:fileName.json");
             writer.open();
             fail("IOException was expected");
@@ -50,7 +50,7 @@ public class FBGameJsonWriterTest {
             Score score = new Score("test", 10);
             Deque<Tube > tubes = new ArrayDeque<>();
             tubes.add(new Tube(5, 5, 10, 20));
-            FBGame game = new FBGame(20, 20, bird, score, tubes);
+            FBGame game = new FBGame(bird, score, tubes);
 
             FBGameJsonWriter writer = new FBGameJsonWriter("./data/testWriterGeneralFBGame.json");
             writer.open();
