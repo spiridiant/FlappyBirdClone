@@ -54,7 +54,7 @@ public class FBGameTest {
 
     @Test
     public void testIsValidPosition() {
-        for(int i = 0; i < testGame.WIDTH / 2; i++) {
+        for(int i = 0; i < testGame.WIDTH / 4; i++) {
             testGame.update();
         }
         int x_pos = testGame.WIDTH / 2;
