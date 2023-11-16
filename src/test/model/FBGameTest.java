@@ -58,7 +58,8 @@ public class FBGameTest {
             testGame.update();
         }
         int x_pos = testGame.WIDTH / 2;
-        int y_pos = (testGame.getTubes().getFirst().getSpaceStart() + testGame.getTubes().getFirst().getSpaceEnd()) / 2;
+        int y_pos = testGame.getTubes().getFirst().getSpaceStart() + 20;
+        assertTrue(testGame.isValidPosition(x_pos, y_pos));
         assertTrue(testGame.isValidPosition(x_pos, y_pos));
     }
 
