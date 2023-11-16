@@ -52,6 +52,15 @@ public class FBGameTest {
         assertTrue(testGame.isValidPosition(3, 9));
     }
 
+    @Test
+    public void testIsValidPosition() {
+        for(int i = 0; i < testGame.WIDTH / 2; i++) {
+            testGame.update();
+        }
+        int x_pos = testGame.WIDTH / 2;
+        int y_pos = (testGame.getTubes().getFirst().getSpaceStart() + testGame.getTubes().getFirst().getSpaceEnd()) / 2;
+        assertTrue(testGame.isValidPosition(x_pos, y_pos));
+    }
 
     @Test
     public void testGetScore() {
