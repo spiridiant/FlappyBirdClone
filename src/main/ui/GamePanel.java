@@ -7,6 +7,7 @@ import model.Tube;
 import persistence.FBGameJsonReader;
 import persistence.FBGameJsonWriter;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -33,6 +34,7 @@ public class GamePanel extends JPanel implements MouseListener {
     private FBGameJsonReader jsonReader;
     private Timer timer;
     private JLabel score;
+    private Image image;
 
     public GamePanel(Leaderboard leaderboard, CardLayout cl, JPanel flappyBird) {
         try {
@@ -46,6 +48,7 @@ public class GamePanel extends JPanel implements MouseListener {
         this.cl = cl;
         this.flappyBird = flappyBird;
         this.game = new FBGame();
+
         makeGamerOver();
         flappyBird.add(gameOver, "over");
 
@@ -53,12 +56,20 @@ public class GamePanel extends JPanel implements MouseListener {
         addMouseListener(this);
 
         initScore();
-
+        setBirdIcon();
         add(score, BorderLayout.NORTH);
 
         setPreferredSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
-        setBackground(new Color(13, 101, 175, 255));
+        setBackground(new Color(0, 142, 255, 255));
         addTimer();
+    }
+
+    private void setBirdIcon() {
+        try {
+            image = ImageIO.read(getClass().getResource("/bird.png"));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     /**
@@ -221,15 +232,13 @@ public class GamePanel extends JPanel implements MouseListener {
      * EFFECT:      draw the tubes on the terminal
      */
     private void drawTubes(Graphics g) {
+        Color savedCol = g.getColor();
         for (Tube tube : game.getTubes()) {
-            Color savedCol = g.getColor();
             g.setColor(tube.COLOR);
-
             g.fillRect(tube.getX(), 0, tube.WIDTH, tube.getSpaceStart());
             g.fillRect(tube.getX(), tube.getSpaceEnd(), tube.WIDTH, PANEL_HEIGHT);
-
-            g.setColor(savedCol);
         }
+        g.setColor(savedCol);
     }
 
     /**
@@ -238,7 +247,8 @@ public class GamePanel extends JPanel implements MouseListener {
     private void drawBird(Graphics g) {
         Color savedCol = g.getColor();
         g.setColor(game.getBird().COLOR);
-        g.fillOval(game.getBird().getX(), game.getBird().getY(), game.getBird().SIZE_X, game.getBird().SIZE_Y);
+        g.drawImage(image, game.getBird().getX(), game.getBird().getY(),
+                game.getBird().SIZE_X, game.getBird().SIZE_Y, new Color(0, 0, 0, 0), this);
         g.setColor(savedCol);
     }
 
@@ -247,7 +257,7 @@ public class GamePanel extends JPanel implements MouseListener {
      */
     private void drawGround(Graphics g) {
         Color savedCol = g.getColor();
-        g.setColor(Color.GRAY);
+        g.setColor(new Color(134, 67, 0));
         g.fillRect(0, PANEL_HEIGHT - GROUND_HEIGHT, PANEL_WIDTH, GROUND_HEIGHT);
         g.setColor(savedCol);
     }

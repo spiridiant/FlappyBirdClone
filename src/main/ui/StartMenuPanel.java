@@ -2,6 +2,7 @@ package ui;
 
 import model.Leaderboard;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
@@ -35,12 +36,29 @@ public class StartMenuPanel extends JPanel {
         }
 
         this.setPreferredSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
+        setBackground(new Color(0, 142, 255, 255));
         setLayout(null);
-        addButtons();
-        this.leaderboard = leaderboard;
 
+        this.leaderboard = leaderboard;
         this.cl = cl;
         this.flappyBird = flappyBird;
+        addButtons();
+    }
+
+    @Override
+    public void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        drawIcon(g);
+    }
+
+    private void drawIcon(Graphics g) {
+        Image image;
+        try {
+            image = ImageIO.read(getClass().getResource("/icon.png"));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        g.drawImage(image, 150, 30, 275, 200, new Color(0,0,0,0), this);
     }
 
     /**
@@ -57,10 +75,10 @@ public class StartMenuPanel extends JPanel {
         view.setBounds(200, 380, BUTTON_WIDTH, BUTTON_HEIGHT);
         quit.setBounds(200, 430, BUTTON_WIDTH, BUTTON_HEIGHT);
         addCommands();
-        this.add(start);
-        this.add(resume);
-        this.add(view);
-        this.add(quit);
+        add(start);
+        add(resume);
+        add(view);
+        add(quit);
     }
 
     /**

@@ -10,8 +10,8 @@ import java.awt.*;
  */
 public class Bird implements Writable {
 
-    public static final int SIZE_X = 20;
-    public static final int SIZE_Y = 15;
+    public static final int SIZE_X = 50;
+    public static final int SIZE_Y = 37;
     public static final int fallLength = 2;
     public static final int flapLength = -100;
     public static final Color COLOR = Color.RED;

@@ -1,92 +1,94 @@
-{
-  "scores": [
+{"scores": [
     {
-      "username": "William",
-      "points": 10
+        "username": "Emily",
+        "points": 21
     },
     {
-      "username": "Emma",
-      "points": 9
+        "username": "Ethan",
+        "points": 20
     },
     {
-      "username": "James",
-      "points": 8
+        "username": "Harper",
+        "points": 19
     },
     {
-      "username": "Ava",
-      "points": 7
+        "username": "Mason",
+        "points": 18
     },
     {
-      "username": "Noah",
-      "points": 6
+        "username": "Logan",
+        "points": 17
     },
     {
-      "username": "Mia",
-      "points": 6
+        "username": "Isabella",
+        "points": 16
     },
     {
-      "username": "John",
-      "points": 6
+        "username": "Sophie",
+        "points": 15
     },
     {
-      "username": "Olivia",
-      "points": 5
+        "username": "Oliver",
+        "points": 14
     },
     {
-      "username": "Eli",
-      "points": 4
+        "username": "Lucas",
+        "points": 13
     },
     {
-      "username": "Sophia",
-      "points": 3
+        "username": "Amelia",
+        "points": 12
     },
     {
-      "username": "Liam",
-      "points": 2
+        "username": "Charlotte",
+        "points": 11
     },
     {
-      "username": "Charlotte",
-      "points": 11
+        "username": "William",
+        "points": 10
     },
     {
-      "username": "Oliver",
-      "points": 14
+        "username": "Emma",
+        "points": 9
     },
     {
-      "username": "Amelia",
-      "points": 12
+        "username": "James",
+        "points": 8
     },
     {
-      "username": "Lucas",
-      "points": 13
+        "username": "Ava",
+        "points": 7
     },
     {
-      "username": "Isabella",
-      "points": 16
+        "username": "Noah",
+        "points": 6
     },
     {
-      "username": "Mason",
-      "points": 18
+        "username": "Mia",
+        "points": 6
     },
     {
-      "username": "Sophie",
-      "points": 15
+        "username": "John",
+        "points": 6
     },
     {
-      "username": "Logan",
-      "points": 17
+        "username": "Olivia",
+        "points": 5
     },
     {
-      "username": "Harper",
-      "points": 19
+        "username": "Eli",
+        "points": 4
     },
     {
-      "username": "Ethan",
-      "points": 20
+        "username": "Anita",
+        "points": 4
     },
     {
-      "username": "Emily",
-      "points": 21
+        "username": "Sophia",
+        "points": 3
+    },
+    {
+        "username": "Liam",
+        "points": 2
     }
-  ]
-}
+]}

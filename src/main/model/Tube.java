@@ -14,9 +14,9 @@ import java.util.HashSet;
  * the tube has two parts with a space between
  */
 public class Tube implements Writable {
-    public static final int WIDTH = 30;
+    public static final int WIDTH = 50;
     public static final int leftLength = -2;
-    public static final Color COLOR = Color.GREEN;
+    public static final Color COLOR = new Color(70, 255, 0);
     private int xcoor;
 
     public int getSpaceStart() {
