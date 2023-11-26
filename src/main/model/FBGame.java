@@ -29,6 +29,7 @@ public class FBGame implements Writable {
         tubes = new ArrayDeque<>();
         random = new Random();
         pastTubes = new HashSet<>();
+        EventLog.getInstance().logEvent(new Event("Game started."));
     }
 
     public FBGame(Bird bird, Score score, Deque<Tube> tubes) {
@@ -155,6 +156,7 @@ public class FBGame implements Writable {
         json.put("score", score.toJson());
         json.put("bird", bird.toJson());
         json.put("tubes", tubesToJson());
+        EventLog.getInstance().logEvent(new Event("Game saved."));
         return json;
     }
 

@@ -174,11 +174,8 @@ public class LeaderboardPanel extends JPanel {
     // EFFECTS: loads leaderboard from file
     private void loadLeaderboard() {
         try {
-            leaderboard.getScores().clear();
-            Leaderboard loaded = jsonReader.read();
-            for (Score score : loaded.getScores()) {
-                leaderboard.addScore(score);
-            }
+            Leaderboard newLeaderboard = jsonReader.read();
+            leaderboard.setScores(newLeaderboard.getScores());
             updateBoard();
             System.out.println("Loaded saved leaderboard from " + LEADERBOARD_STORE);
         } catch (IOException e) {

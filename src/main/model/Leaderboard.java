@@ -17,7 +17,12 @@ public class Leaderboard implements Writable {
     private List<Score> scores;
 
     public Leaderboard() {
-        scores = new ArrayList<Score>();
+        this.scores = new ArrayList<>();
+    }
+
+    public Leaderboard(List<Score> scores) {
+        this.scores = scores;
+        EventLog.getInstance().logEvent(new Event("Leaderboard Loaded."));
     }
 
     /**
@@ -28,7 +33,13 @@ public class Leaderboard implements Writable {
     public void addScore(Score s) {
         scores.add(s);
         Collections.sort(scores);
+        EventLog.getInstance().logEvent(new Event("Score '" + s + "' has been added to the Leaderboard"));
     }
+
+    public void setScores(List<Score> scores) {
+        this.scores = scores;
+    }
+
 
     public List<Score> getScores() {
         return scores;
@@ -43,6 +54,7 @@ public class Leaderboard implements Writable {
     public JSONObject toJson() {
         JSONObject json = new JSONObject();
         json.put("scores", scoresToJson());
+        EventLog.getInstance().logEvent(new Event("Leaderboard Saved"));
         return json;
     }
 

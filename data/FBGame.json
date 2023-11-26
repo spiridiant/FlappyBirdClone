@@ -1,21 +1,13 @@
 {
-    "score": {"points": 3},
-    "tubes": [
-        {
-            "spaceStart": 139,
-            "maxY": 500,
-            "x": 222,
-            "spaceEnd": 339
-        },
-        {
-            "spaceStart": 34,
-            "maxY": 500,
-            "x": 524,
-            "spaceEnd": 234
-        }
-    ],
+    "score": {"points": 0},
+    "tubes": [{
+        "spaceStart": 26,
+        "maxY": 500,
+        "x": 390,
+        "spaceEnd": 226
+    }],
     "bird": {
         "x": 300,
-        "y": 212
+        "y": 256
     }
 }

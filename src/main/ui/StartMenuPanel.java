@@ -45,12 +45,20 @@ public class StartMenuPanel extends JPanel {
         addButtons();
     }
 
+    /**
+     * MODIFIES:    this
+     * EFFECT:      paint the components
+     */
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         drawIcon(g);
     }
 
+    /**
+     * MODIFIES:    this
+     * EFFECT:      draw the icon on screen
+     */
     private void drawIcon(Graphics g) {
         Image image;
         try {

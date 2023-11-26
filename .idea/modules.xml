@@ -2,6 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/../../Problems/AlarmSystem/AlarmSystem.iml" filepath="$PROJECT_DIR$/../../Problems/AlarmSystem/AlarmSystem.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../../Problems/AlarmSystem/AlarmSystem1.iml" filepath="$PROJECT_DIR$/../../Problems/AlarmSystem/AlarmSystem1.iml" />
       <module fileurl="file://$PROJECT_DIR$/../../Labs/B02-SpaceInvadersBase/B02-SpaceInvadersBase.iml" filepath="$PROJECT_DIR$/../../Labs/B02-SpaceInvadersBase/B02-SpaceInvadersBase.iml" />
       <module fileurl="file://$PROJECT_DIR$/../../Labs/B02-SpaceInvadersBase/B02-SpaceInvadersBase1.iml" filepath="$PROJECT_DIR$/../../Labs/B02-SpaceInvadersBase/B02-SpaceInvadersBase1.iml" />
       <module fileurl="file://$PROJECT_DIR$/Project-Starter.iml" filepath="$PROJECT_DIR$/Project-Starter.iml" />

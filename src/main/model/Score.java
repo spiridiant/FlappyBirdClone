@@ -50,6 +50,14 @@ public class Score implements Comparable<Score>, Writable {
         return Integer.compare(other.points, this.points);
     }
 
+    /**
+     * EFFECT:      Convert the object to String
+     */
+    @Override
+    public String toString() {
+        return username + ": " + points;
+    }
+
 
     /**
      * MODIFIES:    this

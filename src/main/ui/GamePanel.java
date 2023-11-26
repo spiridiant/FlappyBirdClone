@@ -64,6 +64,10 @@ public class GamePanel extends JPanel implements MouseListener {
         addTimer();
     }
 
+    /**
+     * MODIFIES:    this
+     * EFFECT:      draw the icon on screen
+     */
     private void setBirdIcon() {
         try {
             image = ImageIO.read(getClass().getResource("/bird.png"));
@@ -126,6 +130,10 @@ public class GamePanel extends JPanel implements MouseListener {
         });
     }
 
+    /**
+     * MODIFIES:    this
+     * EFFECT:      paint the components
+     */
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -286,6 +294,10 @@ public class GamePanel extends JPanel implements MouseListener {
         }
     }
 
+    /**
+     * MODIFIES:    game
+     * EFFECT:      falp the bir when mouse clicked
+     */
     @Override
     public void mouseClicked(MouseEvent e) {
         game.getBird().flap();

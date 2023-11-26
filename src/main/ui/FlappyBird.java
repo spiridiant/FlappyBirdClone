@@ -1,9 +1,13 @@
 package ui;
 
+import model.Event;
+import model.EventLog;
 import model.Leaderboard;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.IOException;
 
 /**
@@ -32,13 +36,31 @@ public class FlappyBird extends JFrame {
         cl.show(flappyBird, "menu");
 
         add(flappyBird);
-        
+
         pack();
         centreOnScreen();
         setVisible(true);
+        printLogOnExit();
     }
 
+    private void printLogOnExit() {
+        addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                printLog();
+            }
+        });
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+            printLog();
+        }));
+    }
 
+    private void printLog() {
+        for (Event next : EventLog.getInstance()) {
+            System.out.println(next.toString() + "\n\n");
+        }
+        EventLog.getInstance().clear();
+    }
 
     // Centres frame on desktop, from SpaceInvader
     // modifies: this
