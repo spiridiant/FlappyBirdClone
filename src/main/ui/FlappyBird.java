@@ -59,7 +59,6 @@ public class FlappyBird extends JFrame {
         for (Event next : EventLog.getInstance()) {
             System.out.println(next.toString() + "\n\n");
         }
-        EventLog.getInstance().clear();
     }
 
     // Centres frame on desktop, from SpaceInvader

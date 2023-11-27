@@ -28,7 +28,7 @@ is to prevent the bird from falling to the ground or hitting a tube.
 - As a user, I want to be able to load the saved **Leaderboard** by selecting the option at the start menu.
 
 
-# Instructions for Grader
+### Instructions for Grader
 
 - You can add your **Score** to the **Leaderboard** after the game is over by entering your username into the prompt box and click *Add to Leaderboard*
 - You can view the **Score**s in the **Leaderboard** by clicking **View Leaderboard** at Start Menu
@@ -38,3 +38,21 @@ is to prevent the bird from falling to the ground or hitting a tube.
 - You can reload the state of the **Leaderboard** by clicking *Load* at Leaderboard Panel
 - You can save the state of the **Game** by clicking save 's' at during a game
 - You can reload the state of the **Game** by clicking *Resume Game* at Start Menu
+
+### Phase 4: Task 2
+**EventLog output example:**
+
+    Mon Nov 27 02:46:07 PST 2023
+    Leaderboard Loaded.
+
+
+    Mon Nov 27 02:46:20 PST 2023
+    Game started.
+
+
+    Mon Nov 27 02:46:28 PST 2023
+    Score 'Josh: 1' has been added to the Leaderboard
+
+
+    Mon Nov 27 02:46:37 PST 2023
+    Leaderboard Saved
