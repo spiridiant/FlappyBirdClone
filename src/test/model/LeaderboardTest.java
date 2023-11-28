@@ -45,6 +45,12 @@ public class LeaderboardTest {
         assertEquals(score3, scores.get(0));
         assertEquals(score1, scores.get(1));
         assertEquals(score2, scores.get(2));
+
+        testBoard.setScores(scores);
+        assertEquals(3, scores.size());
+        assertEquals(score3, scores.get(0));
+        assertEquals(score1, scores.get(1));
+        assertEquals(score2, scores.get(2));
     }
 
 
