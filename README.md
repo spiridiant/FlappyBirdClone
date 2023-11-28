@@ -56,3 +56,7 @@ is to prevent the bird from falling to the ground or hitting a tube.
 
     Mon Nov 27 02:46:37 PST 2023
     Leaderboard Saved
+
+### Phase 4: Task 3
+**Potential Improvements**
+- Refactor the GameOverPanel variable in GamePanel class into a separate class.
