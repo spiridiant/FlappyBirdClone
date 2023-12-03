@@ -29,12 +29,12 @@ public class GamePanel extends JPanel implements MouseListener {
     private Leaderboard leaderboard;
     private CardLayout cl;
     private JPanel flappyBird;
-    private JPanel gameOver;
     private FBGameJsonWriter jsonWriter;
     private FBGameJsonReader jsonReader;
     private Timer timer;
     private JLabel score;
     private Image image;
+    private GameOverPanel gameOverPanel;
 
     public GamePanel(Leaderboard leaderboard, CardLayout cl, JPanel flappyBird) {
         try {
@@ -49,8 +49,8 @@ public class GamePanel extends JPanel implements MouseListener {
         this.flappyBird = flappyBird;
         this.game = new FBGame();
 
-        makeGamerOver();
-        flappyBird.add(gameOver, "over");
+        gameOverPanel = new GameOverPanel();
+        flappyBird.add(gameOverPanel, "over");
 
         addKeyListener(new KeyHandler());
         addMouseListener(this);
@@ -142,51 +142,6 @@ public class GamePanel extends JPanel implements MouseListener {
     }
 
 
-    /**
-     * MODIFIES:    this
-     * EFFECT:      make the game over interface
-     */
-    private void makeGamerOver() {
-        gameOver = new JPanel();
-
-        JTextField textField = new JTextField("Enter your username here");
-        JButton restart = new JButton("restart");
-        JButton add = new JButton("Add to Leaderboard");
-        JButton back = new JButton("Back to the Menu");
-        makeGameOverElements(textField, restart, add, back);
-
-        gameOver.add(textField);
-        gameOver.add(add);
-        gameOver.add(restart);
-        gameOver.add(back);
-    }
-
-    /**
-     * MODIFIES:    this
-     * EFFECT:      make the textfields and buttons in the game over interface
-     */
-    private void makeGameOverElements(JTextField textField, JButton restart, JButton add, JButton back) {
-        textField.addFocusListener(new FocusAdapter() {
-            public void focusGained(FocusEvent e) {
-                JTextField source = (JTextField)e.getComponent();
-                source.setText("");
-                source.removeFocusListener(this);
-            }
-        });
-        textField.setPreferredSize(new Dimension(200,30));
-
-        add.addActionListener((ActionEvent e) -> {
-            String username = textField.getText();
-            leaderboard.addScore(new Score(username, game.getScore().getPoints()));
-        });
-        restart.addActionListener((ActionEvent e) -> {
-            game = new FBGame();
-            start();
-        });
-        back.addActionListener((ActionEvent e) -> {
-            cl.show(flappyBird, "menu");
-        });
-    }
 
     /**
      * MODIFIES:    this
@@ -321,5 +276,74 @@ public class GamePanel extends JPanel implements MouseListener {
     @Override
     public void mouseExited(MouseEvent e) {
 
+    }
+
+    private class GameOverPanel extends JPanel {
+
+        /**
+         * MODIFIES:    this
+         * EFFECT:      make the game over interface
+         */
+        private GameOverPanel() {
+            setBackground(new Color(0, 142, 255, 255));
+            setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+
+            JPanel display = new JPanel();
+            display.setBackground(new Color(255, 106, 0, 255));
+            display.setMaximumSize(new Dimension(200, 200));
+            display.setLayout(new BoxLayout(display, BoxLayout.Y_AXIS));
+            JTextField textField = new JTextField("Enter your username here");
+            JButton restart = new JButton("restart");
+            JButton add = new JButton("Add to Leaderboard");
+            JButton back = new JButton("Back to the Menu");
+            setElements(textField, restart, add, back);
+
+            display.add(Box.createVerticalStrut(20));
+            display.add(textField);
+            display.add(Box.createVerticalStrut(25));
+            display.add(add);
+            display.add(Box.createVerticalStrut(25));
+            display.add(restart);
+            display.add(Box.createVerticalStrut(25));
+            display.add(back);
+
+            add(Box.createVerticalStrut(150));
+            add(display);
+        }
+
+
+
+        /**
+         * MODIFIES:    this
+         * EFFECT:      make the textfields and buttons in the game over interface
+         */
+        private void setElements(JTextField textField, JButton restart, JButton add, JButton back) {
+            textField.addFocusListener(new FocusAdapter() {
+                public void focusGained(FocusEvent e) {
+                    JTextField source = (JTextField)e.getComponent();
+                    source.setText("");
+                    source.removeFocusListener(this);
+                }
+            });
+
+            add.addActionListener((ActionEvent e) -> {
+                String username = textField.getText();
+                leaderboard.addScore(new Score(username, game.getScore().getPoints()));
+                JOptionPane.showMessageDialog(this, "Your score has been added to Leaderboard.", "Congratulations!", JOptionPane.INFORMATION_MESSAGE);
+            });
+            restart.addActionListener((ActionEvent e) -> {
+                game = new FBGame();
+                start();
+            });
+            back.addActionListener((ActionEvent e) -> {
+                cl.show(flappyBird, "menu");
+            });
+            textField.setMaximumSize(new Dimension(180, 20));
+
+            back.setAlignmentX(CENTER_ALIGNMENT);
+            textField.setAlignmentX(CENTER_ALIGNMENT);
+            add.setAlignmentX(CENTER_ALIGNMENT);
+            restart.setAlignmentX(CENTER_ALIGNMENT);
+        }
     }
 }

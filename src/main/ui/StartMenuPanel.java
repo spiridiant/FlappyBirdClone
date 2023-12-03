@@ -13,7 +13,7 @@ import static java.lang.System.exit;
  * The start menu in the console
  * take user commands and execute them
  */
-public class StartMenuPanel extends JPanel {
+public class  StartMenuPanel extends JPanel {
 
     private static final int PANEL_WIDTH = 600;
     private static final int PANEL_HEIGHT = 500;
@@ -62,11 +62,11 @@ public class StartMenuPanel extends JPanel {
     private void drawIcon(Graphics g) {
         Image image;
         try {
-            image = ImageIO.read(getClass().getResource("/icon.png"));
+            image = ImageIO.read(getClass().getResource("/logo.png"));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        g.drawImage(image, 150, 30, 275, 200, new Color(0,0,0,0), this);
+        g.drawImage(image, 165, 10, 260, 260, new Color(0,0,0,0), this);
     }
 
     /**

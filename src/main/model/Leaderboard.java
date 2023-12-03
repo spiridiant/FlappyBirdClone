@@ -42,6 +42,7 @@ public class Leaderboard implements Writable {
 
 
     public List<Score> getScores() {
+        EventLog.getInstance().logEvent(new Event("Viewing scores on the Leaderboard"));
         return scores;
     }
 
