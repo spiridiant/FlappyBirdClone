@@ -5,6 +5,8 @@
 The application presents a game which the user will control a bird, the object of the game
 is to prevent the bird from falling to the ground or hitting a tube.
 
+![](demo/demo1.png)
+![](demo/demo2.png)
 **A *models* list :**
 - Bird: A class that represents the bird
 - Tube： A class that represents the tubes which the bird **MUST NOT** hit
